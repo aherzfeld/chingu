@@ -1,5 +1,5 @@
 import unicodedata
-from wordlist import verb_list
+from app.verblist import verb_list
 
 
 # print([c.decode('utf-8') for c in byteslist])
@@ -38,7 +38,7 @@ def conjugate(word):
     Only works for 아, 오 and 하 verbs """
     if last_vowel(word) == 'HANGUL SYLLABLE HA':
         return word[:-2] + '해요'
-    elif 'A' in last_vowel(word) and ('AE')
+    #elif 'A' in last_vowel(word) and ('AE')
 
 
 
