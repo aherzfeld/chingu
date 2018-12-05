@@ -29,7 +29,7 @@ class Verb():
     def __init__(self, verb):
         self.verb = verb
 
-    def conjugate_present_tense(self):
+    def conjugate_present(self):
         pass
 
     def last_syllable(word):
@@ -41,24 +41,55 @@ class Verb():
     ###########################################################################
 
     def _compose(choseong, jungseong, jongseong=''):
-        """ Returns a Hangul syllable block composed of its component parts
+        """ Returns a Hangul syllable block composed of its component letters
 
         Param: choseong (aka initial consonant)
         Param: jungseong (aka medial vowel/diphthong)
-        Param (optional): jongseong (aka final consonant) """
+        Param (optional): jongseong (aka final consonant)
+
+        Usage: _compose('ㅎ', 'ㅏ', 'ㄴ') returns '한' """
+
+        # seems to not be needed - remove once confirmed
+        # if jongseong is None:
+        #     jongseong = ''
 
         try:
             choseong_index = Verb.CHOSEONG.index(choseong)
             jungseong_index = Verb.JUNGSEONG.index(jungseong)
             jongseong_index = Verb.JONGSEONG.index(jongseong)
         except:
-            raise NotHangulException('No valid Hangul syllable block can be\
+            # raise NotHangulException (create custom Exception)
+            print('No valid Hangul syllable block can be\
                 composed with the given inputs.')
 
         return chr(Verb.FIRST_HANGUL_UNICODE +
                    (choseong_index * Verb.NUM_JUNGSEONG * Verb.NUM_JONGSEONG) +
                    (jungseong_index * Verb.NUM_JONGSEONG) +
                    jongseong_index)
+
+    def _decompose(syllable_block):
+        """ Returns individual letters (자모) by decomposing syllable block
+
+        Param: syllable_block (글자, a Korean "block character")
+
+        Usage: _decompose('한') returns ('ㅎ', 'ㅏ', 'ㄴ') """
+
+        # add exceptions if len(syllable_block) < 1
+
+        code = ord(syllable_block) - Verb.FIRST_HANGUL_UNICODE
+        jongseong_index = code % Verb.NUM_JONGSEONG
+        code //= Verb.NUM_JONGSEONG
+        jungseong_index = code % Verb.NUM_JUNGSEONG
+        code //= Verb.NUM_JUNGSEONG
+        choseong_index = code
+
+        if Verb.JONGSEONG[jongseong_index] == '':
+            return (Verb.CHOSEONG[choseong_index],
+                    Verb.JUNGSEONG[jungseong_index])
+        else:
+            return (Verb.CHOSEONG[choseong_index],
+                    Verb.JUNGSEONG[jungseong_index],
+                    Verb.JONGSEONG[jongseong_index])
 
 
 

@@ -1,5 +1,5 @@
 import unittest
-import Verb  # not yet built
+from app.verb import Verb
 
 
 class TestVerb(unittest.TestCase):
@@ -7,18 +7,18 @@ class TestVerb(unittest.TestCase):
     def test_compose(self):
         self.assertEqual(Verb._compose('ㄱ', 'ㅏ'), '가')
         self.assertEqual(Verb._compose('ㅎ', 'ㅏ', 'ㄴ'), '한')
-        # checking if separate chars work as jonseong
-        self.assertEqual(Verb._compose('ㅇ', 'ㅣ', 'ㄹㄱ'), '읽')
+        # checking if separate chars work as jonseong (they don't)
+        # self.assertEqual(Verb._compose('ㅇ', 'ㅣ', 'ㄹㄱ'), '읽')
         self.assertEqual(Verb._compose('ㅇ', 'ㅣ', 'ㄺ'), '읽')
         self.assertEqual(Verb._compose('ㅎ', 'ㅐ'), '해')
 
     def test_decompose(self):
-        self.assertEqual(Verb._decompose('가'), 'ㄱ', 'ㅏ')
-        self.assertEqual(Verb._decompose('한'), 'ㅎ', 'ㅏ', 'ㄴ')
-        # checking if separate chars work as jonseong
-        self.assertEqual(Verb._decompose('읽'), 'ㅇ', 'ㅣ', 'ㄹㄱ')
-        self.assertEqual(Verb._decompose('읽'), 'ㅇ', 'ㅣ', 'ㄺ')
-        self.assertEqual(Verb._decompose('해'), 'ㅎ', 'ㅐ')
+        self.assertEqual(Verb._decompose('가'), ('ㄱ', 'ㅏ'))
+        self.assertEqual(Verb._decompose('한'), ('ㅎ', 'ㅏ', 'ㄴ'))
+        # checking if separate chars work as jonseong (they don't)
+        # self.assertEqual(Verb._decompose('읽'), ('ㅇ', 'ㅣ', 'ㄹㄱ'))
+        self.assertEqual(Verb._decompose('읽'), ('ㅇ', 'ㅣ', 'ㄺ'))
+        self.assertEqual(Verb._decompose('해'), ('ㅎ', 'ㅐ'))
 
     # check object instatiation depending on implementation of Verb
     # might need to be Verb([verb]).conjugate_present
