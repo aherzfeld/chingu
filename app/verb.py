@@ -33,8 +33,14 @@ class Verb():
         pass
 
     def last_syllable(word):
-        """ returns the last syllable (글자), before 다 """
-        return unicodedata.name(word[-2])
+        """ returns the last syllable (글자), before 다. Useful for verb
+        conjugation.
+
+        Param: word - Hangul verb or adjective (다 ending)
+
+        Usage: last_syllable('물어보다') returns '보' """
+
+        return word[-2]
 
     ###########################################################################
     # Decomposition & Combination

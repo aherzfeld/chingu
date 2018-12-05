@@ -20,6 +20,13 @@ class TestVerb(unittest.TestCase):
         self.assertEqual(Verb._decompose('읽'), ('ㅇ', 'ㅣ', 'ㄺ'))
         self.assertEqual(Verb._decompose('해'), ('ㅎ', 'ㅐ'))
 
+    def test_last_syllable(self):
+        self.assertEqual(Verb.last_syllable('가다'), '가')
+        self.assertEqual(Verb.last_syllable('괜찮다'), '찮')
+        self.assertEqual(Verb.last_syllable('힘들다'), '들')
+        self.assertEqual(Verb.last_syllable('재미있다'), '있')
+        self.assertEqual(Verb.last_syllable('떨어지다'), '지')
+
     # check object instatiation depending on implementation of Verb
     # might need to be Verb([verb]).conjugate_present
     def test_conjugate_present_tense(self):
