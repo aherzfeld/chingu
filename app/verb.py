@@ -30,10 +30,14 @@ class Verb():
         self.verb = verb
 
     def conjugate_present(self):
+        """ Returns a verb/adj in present tense polite form
+
+        Usage: conjugate_present('오다') returns '와요' """
+
         pass
 
     def last_syllable(word):
-        """ returns the last syllable (글자), before 다. Useful for verb
+        """ returns the last syllable (글자) of a verb/adj stem. Useful for verb
         conjugation.
 
         Param: word - Hangul verb or adjective (다 ending)
