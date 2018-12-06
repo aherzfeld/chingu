@@ -13,12 +13,12 @@ class TestVerb(unittest.TestCase):
         self.assertEqual(Verb._compose('ㅎ', 'ㅐ'), '해')
 
     def test_decompose(self):
-        self.assertEqual(Verb._decompose('가'), ('ㄱ', 'ㅏ'))
+        self.assertEqual(Verb._decompose('가'), ('ㄱ', 'ㅏ', ''))
         self.assertEqual(Verb._decompose('한'), ('ㅎ', 'ㅏ', 'ㄴ'))
         # checking if separate chars work as jonseong (they don't)
         # self.assertEqual(Verb._decompose('읽'), ('ㅇ', 'ㅣ', 'ㄹㄱ'))
         self.assertEqual(Verb._decompose('읽'), ('ㅇ', 'ㅣ', 'ㄺ'))
-        self.assertEqual(Verb._decompose('해'), ('ㅎ', 'ㅐ'))
+        self.assertEqual(Verb._decompose('해'), ('ㅎ', 'ㅐ', ''))
 
     def test_last_syllable(self):
         self.assertEqual(Verb.last_syllable('가다'), '가')
@@ -35,7 +35,7 @@ class TestVerb(unittest.TestCase):
     # might need to be Verb([verb]).conjugate_present
     def test_conjugate_present_tense_hada_verbs(self):
         # 하다 verbs (하 + 여 = 해)
-        self.assertEqual(Verb.conjugate_present('하다'), '헤요')
+        self.assertEqual(Verb.conjugate_present('하다'), '해요')
         self.assertEqual(Verb.conjugate_present('건강하다'), '건강해요')
         self.assertEqual(Verb.conjugate_present('좋아하다'), '좋아해요')
         self.assertEqual(Verb.conjugate_present('궁금하다'), '궁금해요')
@@ -68,6 +68,10 @@ class TestVerb(unittest.TestCase):
         self.assertEqual(Verb.conjugate_present('힘들다'), '힘들어요')
         self.assertEqual(Verb.conjugate_present('재미있다'), '재미있어요')
         self.assertEqual(Verb.conjugate_present('필요없다'), '필요없어요')
+
+    def test_conjugate_present_tense_no_stem_change(self):
+        # verb stems with ㅐ don't change
+        self.assertEqual(Verb.conjugate_present('내다'), '내요')
 
     def test_conjugate_present_tense_eo_verbs_with_contraction(self):
         # verb stem + 어 with contrations (eg. 주다 -> 주어 -> 줘)
