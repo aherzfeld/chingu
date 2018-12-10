@@ -5,8 +5,13 @@ from abc import ABCMeta, abstractmethod
 class Quiz(object):
     """ Provides general quiz functionality. Instantiated for each quiz.
 
-    Param: Specific quiz category class to be used (eg: VerbQuiz)
-    Param: quiz_length - how many questions the quiz will be """
+    Param: quiz_length - how many questions the quiz will be 
+
+    Attributes:
+        quiz_length: number of questions quiz will test
+        num_correct: number of questions answered correctly
+        num_wrong: number of questions answered incorrectly
+    """
 
     __metaclass__ = ABCMeta
 
@@ -23,8 +28,10 @@ class Quiz(object):
     # TODO: current quiz score tracking
 
 
-    # TODO: quiz_session - arg quiz_length, returns num_questions remaining
-
+    # TODO: quiz_session - returns num_questions remaining
+    @property
+    def questions_remaining(self):
+        return self.quiz_length - (self.num_correct + self.num_wrong)
 
     # TODO: get_random_item from provided dict (verbs, phrases etc)
     # Maybe this would be implemented in a Dict class??

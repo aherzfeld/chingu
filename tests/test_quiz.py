@@ -13,9 +13,9 @@ class TestQuizDefaultSetup(unittest.TestCase):
     def tearDown(self):
         del self.quiz
 
-    def test_quiz_session(self):
+    def test_questions_remaining(self):
         """ quiz_session function should track questions remaining """
-        self.assertEqual(self.quiz.quiz_session, 10)
+        self.assertEqual(self.quiz.questions_remaining, 10)
 
     def test_quiz_num_correct(self):
         self.assertEqual(self.quiz.num_correct, 0)
