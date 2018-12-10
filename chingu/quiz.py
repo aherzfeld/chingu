@@ -25,10 +25,14 @@ class Quiz(object):
         """ Return a string representing what type of quiz this is """
         pass
 
-    # TODO: current quiz score tracking
+    @property
+    def score_percent(self):
+        return round(self.num_correct / self.questions_asked, 2)
 
+    @property
+    def questions_asked(self):
+        return self.num_correct + self.num_wrong
 
-    # TODO: quiz_session - returns num_questions remaining
     @property
     def questions_remaining(self):
         return self.quiz_length - (self.num_correct + self.num_wrong)

@@ -23,6 +23,33 @@ class TestQuizDefaultSetup(unittest.TestCase):
     def test_quiz_num_wrong(self):
         self.assertEqual(self.quiz.num_wrong, 0)
 
+class TestQuizCustomSetup(unittest.TestCase):
+    """ Test base class Quiz functionality """
+
+    def setUp(self):
+        """ Instantiate Quiz with 20 questions """
+        self.quiz = Quiz(20)
+        self.quiz.num_correct = 10
+        self.quiz.num_wrong = 5
+
+    def tearDown(self):
+        del self.quiz
+
+    def test_questions_remaining(self):
+        """ quiz_session function should track questions remaining """
+        self.assertEqual(self.quiz.questions_remaining, 5)
+
+    def test_questions_asked(self):
+        self.assertEqual(self.quiz.questions_asked, 15)
+
+    def test_quiz_num_correct(self):
+        self.assertEqual(self.quiz.num_correct, 10)
+
+    def test_quiz_num_wrong(self):
+        self.assertEqual(self.quiz.num_wrong, 5)
+
+    def test_quiz_score_percent(self):
+        self.assertEqual(self.quiz.score_percent, 0.67)
 
 if __name__ == '__main__':
     unittest.main()
