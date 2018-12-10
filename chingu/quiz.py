@@ -10,8 +10,10 @@ class Quiz(object):
 
     __metaclass__ = ABCMeta
 
-    def __init__(self, quiz_length):
+    def __init__(self, quiz_length=10):
         self.quiz_length = quiz_length
+        self.num_correct = 0
+        self.num_wrong = 0
 
     @abstractmethod
     def quiz_type():
@@ -21,9 +23,9 @@ class Quiz(object):
     # TODO: current quiz score tracking
 
 
-    # TODO: quiz_session - arg quiz_length, keeps track of current quiz progress
+    # TODO: quiz_session - arg quiz_length, returns num_questions remaining
 
-    
+
     # TODO: get_random_item from provided dict (verbs, phrases etc)
     # Maybe this would be implemented in a Dict class??
 

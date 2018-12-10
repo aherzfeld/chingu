@@ -1,5 +1,5 @@
 import unittest
-from app.verb import Verb
+from chingu.verb import Verb
 
 
 class TestVerb(unittest.TestCase):
