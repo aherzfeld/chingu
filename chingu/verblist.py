@@ -1,4 +1,5 @@
 # Top 100 Most Useful Korean Verbs
+# Verb / Definition pairs
 
 verb_list = {
     "오다": "to come",
