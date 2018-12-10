@@ -1,5 +1,4 @@
 # Verb class
-import unicodedata
 
 
 class Verb():
@@ -128,6 +127,7 @@ class Verb():
 
         # add exceptions if len(syllable_block) < 1
 
+        # https://www.unicode.org/versions/Unicode11.0.0/ch03.pdf#G24646
         code = ord(syllable_block) - Verb.FIRST_HANGUL_UNICODE
         jongseong_index = code % Verb.NUM_JONGSEONG
         code //= Verb.NUM_JONGSEONG
@@ -135,11 +135,6 @@ class Verb():
         code //= Verb.NUM_JUNGSEONG
         choseong_index = code
 
-        # this may cause problems -- probably better to always output 3 values
-        # if Verb.JONGSEONG[jongseong_index] == '':
-        #     return (Verb.CHOSEONG[choseong_index],
-        #             Verb.JUNGSEONG[jungseong_index])
-        # else:
         return (Verb.CHOSEONG[choseong_index],
                 Verb.JUNGSEONG[jungseong_index],
                 Verb.JONGSEONG[jongseong_index])
