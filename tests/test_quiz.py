@@ -51,5 +51,25 @@ class TestQuizCustomSetup(unittest.TestCase):
     def test_quiz_score_percent(self):
         self.assertEqual(self.quiz.score_percent, 0.67)
 
+class TestVerbQuiz(unittest.TestCase):
+
+    def setUp(self):
+        pass
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 if __name__ == '__main__':
     unittest.main()

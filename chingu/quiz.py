@@ -69,14 +69,20 @@ class VerbQuiz(Quiz, Verb):
         super().__init__(subject_dict, quiz_length=10)
         # TODO: load n(quiz_length) question/answers randomly from subject_dict
         # think about abstracting some of this to Quiz class
-        key_dict = list(subject_dict)
-        random_keys = random.sample(key_dict, quiz_length)
+        key_list = list(subject_dict)
+        random_keys = random.sample(key_list, quiz_length)
         # create list of question/answer tuples
         # specific to present tense for now - add other options later
+        # Turn this into a method that is passed tense methods as args
         self.question_answers = [
             (q, self.conjugate_present(q), subject_dict[q]) for q in random_keys]
 
+    # helper method for question_answers
     def create_question(self):
+        pass
+
+    # this functionality might be better incoporated into question_answers
+    def question_list(self):
         pass
 
 
