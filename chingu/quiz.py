@@ -41,6 +41,13 @@ class Quiz(object):
         pass
 
     @property
+    def _question_keys(self):
+        """ Returns (quiz_length) random keys from subject_dict """
+        key_list = list(self.subject_dict)
+        return random.sample(key_list, self.quiz_length)
+        # return self._question_keys
+    
+    @property
     def score_percent(self):
         return round(self.num_correct / self.questions_asked, 2)
 
@@ -69,13 +76,13 @@ class VerbQuiz(Quiz, Verb):
         super().__init__(subject_dict, quiz_length=10)
         # TODO: load n(quiz_length) question/answers randomly from subject_dict
         # think about abstracting some of this to Quiz class
-        key_list = list(subject_dict)
-        random_keys = random.sample(key_list, quiz_length)
+        
         # create list of question/answer tuples
         # specific to present tense for now - add other options later
         # Turn this into a method that is passed tense methods as args
         self.question_answers = [
-            (q, self.conjugate_present(q), subject_dict[q]) for q in random_keys]
+            (q, self.conjugate_present(q), subject_dict[q])
+            for q in self.question_keys]
 
     # helper method for question_answers
     def create_question(self):

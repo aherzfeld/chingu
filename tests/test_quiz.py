@@ -1,6 +1,7 @@
 # unittest of the quiz module
 import unittest
 from chingu.quiz import Quiz
+from chingu.verblist import verb_list
 
 
 class TestQuizDefaultSetup(unittest.TestCase):
@@ -8,10 +9,13 @@ class TestQuizDefaultSetup(unittest.TestCase):
 
     def setUp(self):
         """ Instantiate Quiz with default 10 questions """
-        self.quiz = Quiz()
+        self.quiz = Quiz(verb_list)
 
     def tearDown(self):
         del self.quiz
+
+    def test_question_key_list_generation(self):
+        self.assertTrue(len(self.quiz._question_keys), 10)
 
     def test_questions_remaining(self):
         """ quiz_session function should track questions remaining """
@@ -28,12 +32,15 @@ class TestQuizCustomSetup(unittest.TestCase):
 
     def setUp(self):
         """ Instantiate Quiz with 20 questions """
-        self.quiz = Quiz(20)
+        self.quiz = Quiz(verb_list, 20)
         self.quiz.num_correct = 10
         self.quiz.num_wrong = 5
 
     def tearDown(self):
         del self.quiz
+
+    def test_question_key_list_generation(self):
+        self.assertTrue(len(self.quiz._question_keys), 20)
 
     def test_questions_remaining(self):
         """ quiz_session function should track questions remaining """
