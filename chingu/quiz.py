@@ -8,13 +8,13 @@ from chingu.verblist import verb_list
 class Quiz(object):
     """ Provides general quiz functionality. Instantiated for each quiz.
 
-    Param: quiz_length - how many questions the quiz will be 
+    Params: quiz_length - how many questions the quiz will be
+            subject_dict - subject specific dict (e.i. verb_list)
 
     Attributes:
         quiz_length: number of questions quiz will test
         num_correct: number of questions answered correctly
-        num_wrong: number of questions answered incorrectly
-    """
+        num_wrong: number of questions answered incorrectly """
 
     __metaclass__ = ABCMeta
 
@@ -59,14 +59,12 @@ class Quiz(object):
     def questions_remaining(self):
         return self.quiz_length - (self.num_correct + self.num_wrong)
 
-    # TODO: get_random_item from provided dict (verbs, phrases etc)
-    # Maybe this would be implemented in a Dict class??
-
     #TODO: start_quiz - loop through questions until done
+    # This will be implemented in IO_Manager class
 
 
 class VerbQuiz(Quiz, Verb):
-    """ Builds verb quiz logic on top of Quiz parent class
+    """ Main purpose is to create question_data to pass to IO Manager Object
 
     Param: quiz_length - how many questions the quiz will be
     Param: subject_dict - always verb_dict in the case of VerbQuiz
@@ -74,30 +72,26 @@ class VerbQuiz(Quiz, Verb):
 
     def __init__(self, subject_dict, quiz_length=10):
         super().__init__(subject_dict, quiz_length=10)
-        # create list of question/answer tuples
-        # specific to present tense for now - add other options later
-        # Turn this into a method that is passed tense methods as args
-        # self.question_answers = [
-        #     (q, self.conjugate_present(q), subject_dict[q])
-        #     for q in self._question_keys]
 
+    # modify to accept option_method as arg
     @property
     def question_data(self):
         """ Returns (question_key, answer, definition, question_str) 
         
-        Params: subject_dict - subject specific dictionary {word: definition}
-                option_method - method corresponding to quiz_option """
+        Utilizes: subject_dict - subject specific dictionary {word: definition}
+                  conjugate_present(verb) - method from Verb class
+                  _question_keys - list of keys for subject_dict from Quiz
+                  option_method - method corresponding to quiz_option """
         
-        return [(q, self.conjugate_present(q), self.subject_dict[q], self._question(q)) for q in self._question_keys]
+        return [(q, self.conjugate_present(q), self.subject_dict[q],
+                self._question(q)) for q in self._question_keys]
 
+    # modify to accept option_method as arg
     @staticmethod
     def _question(question_key):
         """ Receives question_answer tuple, returns formatted question str """
         return 'What is the present tense form of {}?'.format(question_key)
 
-    # this functionality might be better incoporated into question_answers
-    def question_list(self):
-        pass
 
 
 
