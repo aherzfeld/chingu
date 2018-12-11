@@ -74,19 +74,26 @@ class VerbQuiz(Quiz, Verb):
 
     def __init__(self, subject_dict, quiz_length=10):
         super().__init__(subject_dict, quiz_length=10)
-        # TODO: load n(quiz_length) question/answers randomly from subject_dict
-        # think about abstracting some of this to Quiz class
-        
         # create list of question/answer tuples
         # specific to present tense for now - add other options later
         # Turn this into a method that is passed tense methods as args
-        self.question_answers = [
-            (q, self.conjugate_present(q), subject_dict[q])
-            for q in self.question_keys]
+        # self.question_answers = [
+        #     (q, self.conjugate_present(q), subject_dict[q])
+        #     for q in self._question_keys]
 
-    # helper method for question_answers
-    def create_question(self):
-        pass
+    @property
+    def question_data(self):
+        """ Returns (question_key, answer, definition, question_str) 
+        
+        Params: subject_dict - subject specific dictionary {word: definition}
+                option_method - method corresponding to quiz_option """
+        
+        return [(q, self.conjugate_present(q), self.subject_dict[q], self._question(q)) for q in self._question_keys]
+
+    @staticmethod
+    def _question(question_key):
+        """ Receives question_answer tuple, returns formatted question str """
+        return 'What is the present tense form of {}?'.format(question_key)
 
     # this functionality might be better incoporated into question_answers
     def question_list(self):

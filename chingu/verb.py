@@ -30,6 +30,7 @@ class Verb():
     def __init__(self, verb):
         self.verb = verb
 
+    @staticmethod
     def conjugate_present(verb):  # sort out doing this with self
         """ Returns a verb/adj in present tense polite form
 

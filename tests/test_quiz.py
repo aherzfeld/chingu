@@ -1,6 +1,7 @@
 # unittest of the quiz module
 import unittest
-from chingu.quiz import Quiz
+import random
+from chingu.quiz import Quiz, VerbQuiz
 from chingu.verblist import verb_list
 
 
@@ -41,6 +42,8 @@ class TestQuizCustomSetup(unittest.TestCase):
 
     def test_question_key_list_generation(self):
         self.assertTrue(len(self.quiz._question_keys), 20)
+        for key in self.quiz._question_keys:
+            self.assertIs(type(key), str)
 
     def test_questions_remaining(self):
         """ quiz_session function should track questions remaining """
@@ -61,11 +64,47 @@ class TestQuizCustomSetup(unittest.TestCase):
 class TestVerbQuiz(unittest.TestCase):
 
     def setUp(self):
-        pass
+        self.verbquiz = VerbQuiz(verb_list, 20)
 
+    def tearDown(self):
+        del self.verbquiz
 
+    def test_question_keys_is_list(self):
+        self.assertIs(type(self.verbquiz._question_keys), list)
 
+    def test_question_key_list_generation(self):
+        self.assertTrue(len(self.verbquiz._question_keys), 20)
 
+    def test_create_questions(self):
+        self.assertEqual(self.verbquiz._question('하다'),
+            'What is the present tense form of 하다?')
+
+    def test_population_of_question_data(self):
+        data = self.verbquiz.question_data
+        self.assertTrue(len(data), 20)
+        
+    def test_population_of_question_data_verbs_in_subject_dict(self):
+        data = self.verbquiz.question_data
+        for item in data:
+            self.assertIn(item[0], self.verbquiz.subject_dict)
+        
+    def test_population_of_question_data_definitions(self):
+        data = self.verbquiz.question_data
+        for item in data:
+            # ensure definitions are correct
+            self.assertEqual(item[2], self.verbquiz.subject_dict[item[0]])
+            
+    def test_population_of_question_data_conjugations(self):
+        data = self.verbquiz.question_data
+        for item in data:    
+            # ensure conjugations are correct
+            self.assertEqual(item[1], self.verbquiz.conjugate_present(item[0]))
+
+    def test_population_of_question_data_questions(self):
+        data = self.verbquiz.question_data
+        for item in data:
+            # ensure question strings are properly formed
+            self.assertIn(item[0], item[3])
 
 
 
