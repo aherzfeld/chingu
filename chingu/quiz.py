@@ -91,7 +91,8 @@ class QuizInterface():
         self.num_wrong = 0
 
     def start_quiz(self):
-        """ Loop through question_data and return results tuple """
+        """ Loop through question_data and return results tuple.
+        return (quiz_type, num_correct, num_wrong, timestamp) """
         pass
 
     @staticmethod

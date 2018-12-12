@@ -142,10 +142,37 @@ class TestQuizInterfaceStartQuiz(unittest.TestCase):
         del self.quiz
         del self.interface
 
+    def test_ask_question(self):
+        # need to simulate user input here
+        answer = self.interface.ask_question("Test question")
+        self.assertIs(answer, str)
+
+    def test_check_answer(self):
+        self.assertTrue(self.interface.check_answer('해요', '해요'))
+        self.assertFalse(self.interface.check_answer('해요', '해'))
+
+    def test_update_score(self):
+        initial_num_correct = self.interface.num_correct
+        self.interface.update_score(True)
+        updated_num_correct = self.interface.num_correct
+        self.assertEqual(initial_num_correct, updated_num_correct)
+        initial_num_wrong = self.interface.num_wrong
+        self.interface.update_score(False)
+        updated_num_wrong = self.interface.num_wrong
+        self.assertEqual(initial_num_wrong, updated_num_wrong)
+
     def test_start_quiz(self):
-        # test that questions are printed to stdout
-        # test answer checking
-        pass
+        # need to simulate user input
+        results = self.interface.start_quiz()
+        self.assertIs(results[0], str)
+        # add assertEqual to quiz type once implemented
+        self.assertIs(results[1], int)
+        self.assertEqual(results[1], self.interface.num_correct)
+        self.assertIs(results[2], int)
+        self.assertEqual(results[2], self.interface.num_wrong)
+        self.assertIs(results[3], #timestamp)
+        self.assertEqual(self.interface.quiz_length,
+                         self.interface.questions_asked)
 
 
 
