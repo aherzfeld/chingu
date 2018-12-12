@@ -1,5 +1,6 @@
 # unittest of the quiz module
 import unittest
+from unittest.mock import patch
 import random
 from chingu.quiz import Quiz, VerbQuiz, QuizInterface
 from chingu.verblist import verb_list
@@ -142,10 +143,10 @@ class TestQuizInterfaceStartQuiz(unittest.TestCase):
         del self.quiz
         del self.interface
 
-    def test_ask_question(self):
+    @patch('chingu.quiz.QuizInterface.get_input', return_value='answer')
+    def test_get_input(self, input):
         # need to simulate user input here
-        answer = self.interface.ask_question("Test question")
-        self.assertIs(answer, str)
+        self.assertEqual(self.interface.get_input("Test question"), 'answer')
 
     def test_check_answer(self):
         self.assertTrue(self.interface.check_answer('해요', '해요'))
@@ -162,6 +163,15 @@ class TestQuizInterfaceStartQuiz(unittest.TestCase):
         self.assertEqual(initial_num_wrong, updated_num_wrong - 1)
         self.assertFalse(self.interface.update_score('not_bool'))
         self.assertTrue(self.interface.update_score(True))
+
+    def test_ask_question(self):
+        initial_num_correct = self.interface.num_correct
+        # self.interface.ask_question('하다', '해요', 'definition', 'question str')
+        q = ('하다', '해요', 'definition', 'question str')
+        user_answer = '해요'
+        self.interface.update_score(self.interface.check_answer(q[1], user_answer))
+        updated_num_correct = self.interface.num_correct
+        self.assertEqual(initial_num_correct, updated_num_correct - 1)
 
     def test_start_quiz(self):
         # need to simulate user input

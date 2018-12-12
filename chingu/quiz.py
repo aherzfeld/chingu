@@ -82,7 +82,8 @@ class QuizInterface():
     """ Handles User-facing quiz IO and scoretracking """
 
     def __init__(self, quiz_data):
-        """ Param: question_data - created by [Subject]Quiz object """
+        """ Param: quiz_data - created by [Subject]Quiz object 
+        (question_key, answer, definition, question_str) """
 
         self.quiz_data = quiz_data
         self.quiz_length = len(quiz_data)
@@ -90,21 +91,30 @@ class QuizInterface():
         self.num_wrong = 0
 
     def start_quiz(self):
-        """ Loop through question_data and return results tuple.
+        """ Loop through quiz_data and return results tuple.
         return (quiz_type, num_correct, num_wrong, timestamp) """
-        pass
+        for q in self.quiz_data:
+            self.ask_question(q)
+        # TODO: complete the return statement!!!!!!!!!
+        pass 
+
+    def ask_question(q):
+        """ Increments num_correct / num_wrong based on user input
+        Param: q = (question_key, answer, definition, question_str) """
+        user_answer = self.get_input(q[3])
+        self.update_score(check_answer(q[1], user_answer))
 
     @staticmethod
-    def ask_question(question_string):
-        """ Prompt user for answer input. Returns user input string """
-        user_answer = input(question_string + '  ')
-        return user_answer
+    def get_input(question_string):
+        """ Prompt user for answer input. Returns user_answer string """
+        return input(question_string + '  ')
 
     @staticmethod
     def check_answer(answer, user_answer):
         """ Return True if user input answer is correct """
         return answer == user_answer
 
+    # can this be better implemented with setters, getters?
     def update_score(self, boolean):
         """ Receives Boolean, updates num_correct(True) / num_wrong(False) """
         if not isinstance(boolean, bool):
