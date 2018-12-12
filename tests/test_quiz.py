@@ -131,8 +131,21 @@ class TestQuizInterfaceQuestionTracking(unittest.TestCase):
         self.assertEqual(self.interface.score_percent, 0.67)
 
 
+class TestQuizInterfaceStartQuiz(unittest.TestCase):
 
+    def setUp(self):
+        self.quiz = VerbQuiz(verb_list, 20)
+        data = self.quiz.question_data
+        self.interface = QuizInterface(data)    
 
+    def tearDown(self):
+        del self.quiz
+        del self.interface
+
+    def test_start_quiz(self):
+        # test that questions are printed to stdout
+        # test answer checking
+        pass
 
 
 

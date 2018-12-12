@@ -1,4 +1,5 @@
 # Quiz parent class & subject-specific quiz sub-classes
+import sys
 import random
 from abc import ABCMeta, abstractmethod
 from chingu.verb import Verb
@@ -90,7 +91,20 @@ class QuizInterface():
         self.num_wrong = 0
 
     def start_quiz(self):
-        """ Loop through question_data, IO questions/answers with User """
+        """ Loop through question_data and return results tuple """
+        pass
+
+    @staticmethod
+    def ask_question(question_string):
+        """ Prompt user for answer input. Returns user input string """
+        pass
+
+    def check_answer(answer, user_answer):
+        """ Return True if user input answer is correct """
+        pass
+
+    def update_score(self, Boolean):
+        """ Receives Boolean, updates num_correct(True) / num_wrong(False) """
         pass
 
     @property
