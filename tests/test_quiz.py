@@ -1,7 +1,7 @@
 # unittest of the quiz module
 import unittest
 import random
-from chingu.quiz import Quiz, VerbQuiz
+from chingu.quiz import Quiz, VerbQuiz, QuizInterface
 from chingu.verblist import verb_list
 
 
@@ -18,15 +18,6 @@ class TestQuizDefaultSetup(unittest.TestCase):
     def test_question_key_list_generation(self):
         self.assertTrue(len(self.quiz._question_keys), 10)
 
-    def test_questions_remaining(self):
-        """ quiz_session function should track questions remaining """
-        self.assertEqual(self.quiz.questions_remaining, 10)
-
-    def test_quiz_num_correct(self):
-        self.assertEqual(self.quiz.num_correct, 0)
-
-    def test_quiz_num_wrong(self):
-        self.assertEqual(self.quiz.num_wrong, 0)
 
 class TestQuizCustomSetup(unittest.TestCase):
     """ Test base class Quiz functionality """
@@ -34,8 +25,6 @@ class TestQuizCustomSetup(unittest.TestCase):
     def setUp(self):
         """ Instantiate Quiz with 20 questions """
         self.quiz = Quiz(verb_list, 20)
-        self.quiz.num_correct = 10
-        self.quiz.num_wrong = 5
 
     def tearDown(self):
         del self.quiz
@@ -45,21 +34,6 @@ class TestQuizCustomSetup(unittest.TestCase):
         for key in self.quiz._question_keys:
             self.assertIs(type(key), str)
 
-    def test_questions_remaining(self):
-        """ quiz_session function should track questions remaining """
-        self.assertEqual(self.quiz.questions_remaining, 5)
-
-    def test_questions_asked(self):
-        self.assertEqual(self.quiz.questions_asked, 15)
-
-    def test_quiz_num_correct(self):
-        self.assertEqual(self.quiz.num_correct, 10)
-
-    def test_quiz_num_wrong(self):
-        self.assertEqual(self.quiz.num_wrong, 5)
-
-    def test_quiz_score_percent(self):
-        self.assertEqual(self.quiz.score_percent, 0.67)
 
 class TestVerbQuiz(unittest.TestCase):
 
@@ -107,7 +81,54 @@ class TestVerbQuiz(unittest.TestCase):
             self.assertIn(item[0], item[3])
 
 
+class TestQuizInterfaceDefaultSetup(unittest.TestCase):
 
+    def test_default_setup(self):
+        self.quiz = VerbQuiz(verb_list)  # no quiz_length param
+        data = self.quiz.question_data
+        self.interface = QuizInterface(data)
+        self.assertEqual(self.interface.quiz_length, 10)
+
+
+class TestQuizInterfaceCustomSetup(unittest.TestCase):
+
+    def test_custom_setup(self):
+        self.quiz = VerbQuiz(verb_list, 20)
+        data = self.quiz.question_data
+        self.interface = QuizInterface(data)
+        self.assertEqual(self.interface.quiz_length, 20)
+
+
+class TestQuizInterfaceQuestionTracking(unittest.TestCase):
+
+    def setUp(self):
+        self.quiz = VerbQuiz(verb_list, 20)
+        data = self.quiz.question_data
+        self.interface = QuizInterface(data)
+        self.interface.num_correct = 10
+        self.interface.num_wrong = 5
+
+    def tearDown(self):
+        del self.quiz
+        del self.interface
+
+    def test_quiz_length(self):
+        self.assertEqual(self.interface.quiz_length, 20)
+
+    def test_questions_remaining(self):
+        self.assertEqual(self.interface.questions_remaining, 5)
+
+    def test_questions_asked(self):
+        self.assertEqual(self.interface.questions_asked, 15)
+
+    def test_num_correct(self):
+        self.assertEqual(self.interface.num_correct, 10)
+
+    def test_num_wrong(self):
+        self.assertEqual(self.interface.num_wrong, 5)
+
+    def test_score_percent(self):
+        self.assertEqual(self.interface.score_percent, 0.67)
 
 
 

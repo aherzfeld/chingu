@@ -21,8 +21,6 @@ class Quiz(object):
     def __init__(self, subject_dict, quiz_length=10):
         self.subject_dict = subject_dict
         self.quiz_length = quiz_length
-        self.num_correct = 0
-        self.num_wrong = 0
 
     @property
     @abstractmethod
@@ -31,13 +29,13 @@ class Quiz(object):
         pass
 
     @abstractmethod
-    def load_questions(subject_dict):
-        """ Returns n(quiz_length) questions/answers as list of tuples """
+    def question_data(self):
+        """ Returns (question_key, answer, definition, question_str) """
         pass
 
     @abstractmethod
-    def create_question(question_answer_tuple):
-        """ Receives question/answer tuple and returns formatted string """
+    def _question(question_key):
+        """ Receives question_key and returns formatted string """
         pass
 
     @property
@@ -46,32 +44,17 @@ class Quiz(object):
         key_list = list(self.subject_dict)
         return random.sample(key_list, self.quiz_length)
         # return self._question_keys
-    
-    @property
-    def score_percent(self):
-        return round(self.num_correct / self.questions_asked, 2)
-
-    @property
-    def questions_asked(self):
-        return self.num_correct + self.num_wrong
-
-    @property
-    def questions_remaining(self):
-        return self.quiz_length - (self.num_correct + self.num_wrong)
-
-    #TODO: start_quiz - loop through questions until done
-    # This will be implemented in IO_Manager class
 
 
 class VerbQuiz(Quiz, Verb):
-    """ Main purpose is to create question_data to pass to IO Manager Object
+    """ Main purpose is to create question_data to pass to QuizInterface
 
     Param: quiz_length - how many questions the quiz will be
     Param: subject_dict - always verb_dict in the case of VerbQuiz
     """
 
     def __init__(self, subject_dict, quiz_length=10):
-        super().__init__(subject_dict, quiz_length=10)
+        super().__init__(subject_dict, quiz_length)
 
     # modify to accept option_method as arg
     @property
@@ -89,13 +72,38 @@ class VerbQuiz(Quiz, Verb):
     # modify to accept option_method as arg
     @staticmethod
     def _question(question_key):
-        """ Receives question_answer tuple, returns formatted question str """
+        """ Receives question_key, returns formatted question str """
         return 'What is the present tense form of {}?'.format(question_key)
 
 
+# Maybe score tracking should be broken into its own class
+# TODO: inherit from a User object to track persistant quiz history
+class QuizInterface():
+    """ Handles User-facing quiz IO and scoretracking """
 
+    def __init__(self, quiz_data):
+        """ Param: question_data - created by [Subject]Quiz object """
 
+        self.quiz_data = quiz_data
+        self.quiz_length = len(quiz_data)
+        self.num_correct = 0
+        self.num_wrong = 0
 
+    def start_quiz(self):
+        """ Loop through question_data, IO questions/answers with User """
+        pass
+
+    @property
+    def score_percent(self):
+        return round(self.num_correct / self.questions_asked, 2)
+
+    @property
+    def questions_asked(self):
+        return self.num_correct + self.num_wrong
+
+    @property
+    def questions_remaining(self):
+        return self.quiz_length - (self.num_correct + self.num_wrong)
 
 
 
