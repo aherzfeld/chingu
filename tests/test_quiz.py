@@ -155,11 +155,13 @@ class TestQuizInterfaceStartQuiz(unittest.TestCase):
         initial_num_correct = self.interface.num_correct
         self.interface.update_score(True)
         updated_num_correct = self.interface.num_correct
-        self.assertEqual(initial_num_correct, updated_num_correct)
+        self.assertEqual(initial_num_correct, updated_num_correct - 1)
         initial_num_wrong = self.interface.num_wrong
         self.interface.update_score(False)
         updated_num_wrong = self.interface.num_wrong
-        self.assertEqual(initial_num_wrong, updated_num_wrong)
+        self.assertEqual(initial_num_wrong, updated_num_wrong - 1)
+        self.assertFalse(self.interface.update_score('not_bool'))
+        self.assertTrue(self.interface.update_score(True))
 
     def test_start_quiz(self):
         # need to simulate user input
@@ -170,7 +172,7 @@ class TestQuizInterfaceStartQuiz(unittest.TestCase):
         self.assertEqual(results[1], self.interface.num_correct)
         self.assertIs(results[2], int)
         self.assertEqual(results[2], self.interface.num_wrong)
-        self.assertIs(results[3], #timestamp)
+        self.assertIs(results[3], timestamp)
         self.assertEqual(self.interface.quiz_length,
                          self.interface.questions_asked)
 

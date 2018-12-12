@@ -1,5 +1,4 @@
 # Quiz parent class & subject-specific quiz sub-classes
-import sys
 import random
 from abc import ABCMeta, abstractmethod
 from chingu.verb import Verb
@@ -98,15 +97,23 @@ class QuizInterface():
     @staticmethod
     def ask_question(question_string):
         """ Prompt user for answer input. Returns user input string """
-        pass
+        user_answer = input(question_string + '  ')
+        return user_answer
 
+    @staticmethod
     def check_answer(answer, user_answer):
         """ Return True if user input answer is correct """
-        pass
+        return answer == user_answer
 
-    def update_score(self, Boolean):
+    def update_score(self, boolean):
         """ Receives Boolean, updates num_correct(True) / num_wrong(False) """
-        pass
+        if not isinstance(boolean, bool):
+            return False
+        if boolean == True:
+            self.num_correct += 1
+        elif boolean == False:
+            self.num_wrong += 1
+        return True
 
     @property
     def score_percent(self):
