@@ -3,3 +3,5 @@ cheatsheet.txt
 .env
 venv
 chingu.egg-info
+.coverage
+htmlcov

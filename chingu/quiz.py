@@ -1,5 +1,6 @@
 # Quiz parent class & subject-specific quiz sub-classes
 import random
+import datetime
 from abc import ABCMeta, abstractmethod
 from chingu.verb import Verb
 from chingu.verblist import verb_list
@@ -59,7 +60,7 @@ class VerbQuiz(Quiz, Verb):
     # modify to accept option_method as arg
     @property
     def question_data(self):
-        """ Returns (question_key, answer, definition, question_str) 
+        """ Returns [(question_key, answer, definition, question_str), ...] 
         
         Utilizes: subject_dict - subject specific dictionary {word: definition}
                   conjugate_present(verb) - method from Verb class
@@ -90,19 +91,21 @@ class QuizInterface():
         self.num_correct = 0
         self.num_wrong = 0
 
+    # add quiz_type functionality
     def start_quiz(self):
         """ Loop through quiz_data and return results tuple.
         return (quiz_type, num_correct, num_wrong, timestamp) """
         for q in self.quiz_data:
             self.ask_question(q)
         # TODO: complete the return statement!!!!!!!!!
-        pass 
+        return ('quiz_type', self.num_correct, self.num_wrong,
+                datetime.datetime)
 
-    def ask_question(q):
+    def ask_question(self, q):
         """ Increments num_correct / num_wrong based on user input
         Param: q = (question_key, answer, definition, question_str) """
         user_answer = self.get_input(q[3])
-        self.update_score(check_answer(q[1], user_answer))
+        self.update_score(self.check_answer(q[1], user_answer))
 
     @staticmethod
     def get_input(question_string):

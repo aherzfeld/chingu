@@ -2,6 +2,7 @@
 import unittest
 from unittest.mock import patch
 import random
+import datetime
 from chingu.quiz import Quiz, VerbQuiz, QuizInterface
 from chingu.verblist import verb_list
 
@@ -143,27 +144,35 @@ class TestQuizInterfaceStartQuiz(unittest.TestCase):
         del self.quiz
         del self.interface
 
+    # I don't think this is testing properly - learn more and revisit
     @patch('chingu.quiz.QuizInterface.get_input', return_value='answer')
     def test_get_input(self, input):
         # need to simulate user input here
         self.assertEqual(self.interface.get_input("Test question"), 'answer')
 
-    def test_check_answer(self):
+    def test_check_answer_correct_answer(self):
         self.assertTrue(self.interface.check_answer('해요', '해요'))
+        
+    def test_check_answer_wrong_answer(self):
         self.assertFalse(self.interface.check_answer('해요', '해'))
 
-    def test_update_score(self):
+    def test_update_score_correct_answer(self):
         initial_num_correct = self.interface.num_correct
         self.interface.update_score(True)
         updated_num_correct = self.interface.num_correct
         self.assertEqual(initial_num_correct, updated_num_correct - 1)
+        
+    def test_update_score_wrong_answer(self):
         initial_num_wrong = self.interface.num_wrong
         self.interface.update_score(False)
         updated_num_wrong = self.interface.num_wrong
         self.assertEqual(initial_num_wrong, updated_num_wrong - 1)
+        
+    def test_update_score_return_boolean_value(self):
         self.assertFalse(self.interface.update_score('not_bool'))
         self.assertTrue(self.interface.update_score(True))
 
+    # refactor to mock helper functions and call properly
     def test_ask_question(self):
         initial_num_correct = self.interface.num_correct
         # self.interface.ask_question('하다', '해요', 'definition', 'question str')
@@ -173,16 +182,18 @@ class TestQuizInterfaceStartQuiz(unittest.TestCase):
         updated_num_correct = self.interface.num_correct
         self.assertEqual(initial_num_correct, updated_num_correct - 1)
 
-    def test_start_quiz(self):
+    # I don't trust this test - learn more and refactor
+    @patch('chingu.quiz.QuizInterface.get_input', return_value='해요')
+    def test_start_quiz(self, mock_input):
         # need to simulate user input
         results = self.interface.start_quiz()
-        self.assertIs(results[0], str)
+        self.assertEqual(results[0], 'quiz_type')
         # add assertEqual to quiz type once implemented
-        self.assertIs(results[1], int)
+        self.assertIs(type(results[1]), int)
         self.assertEqual(results[1], self.interface.num_correct)
-        self.assertIs(results[2], int)
+        self.assertIs(type(results[2]), int)
         self.assertEqual(results[2], self.interface.num_wrong)
-        self.assertIs(results[3], timestamp)
+        self.assertIs(results[3], datetime.datetime)
         self.assertEqual(self.interface.quiz_length,
                          self.interface.questions_asked)
 
