@@ -19,15 +19,17 @@ class Quiz(object):
 
     __metaclass__ = ABCMeta
 
-    def __init__(self, subject_dict, quiz_length=10):
+    def __init__(self, subject_dict, quiz_type=None, quiz_length=10):
         self.subject_dict = subject_dict
+        self.quiz_type = quiz_type
         self.quiz_length = quiz_length
 
-    @property
-    @abstractmethod
-    def quiz_type():
-        """ Return a string representing what type of quiz this is """
-        pass
+    # Instead of this, create a __str__ method
+    # @property
+    # @abstractmethod
+    # def quiz_type():
+    #     """ Return a string representing what type of quiz this is """
+    #     pass
 
     @abstractmethod
     def question_data(self):
@@ -44,7 +46,6 @@ class Quiz(object):
         """ Returns (quiz_length) random keys from subject_dict """
         key_list = list(self.subject_dict)
         return random.sample(key_list, self.quiz_length)
-        # return self._question_keys
 
 
 class VerbQuiz(Quiz, Verb):
@@ -54,13 +55,13 @@ class VerbQuiz(Quiz, Verb):
     Param: subject_dict - always verb_dict in the case of VerbQuiz
     """
 
-    def __init__(self, subject_dict, quiz_length=10):
-        super().__init__(subject_dict, quiz_length)
+    def __init__(self, subject_dict, quiz_type='present', quiz_length=10):
+        super().__init__(subject_dict, quiz_type, quiz_length)
 
     # modify to accept option_method as arg
     @property
-    def question_data(self):
-        """ Returns [(question_key, answer, definition, question_str), ...] 
+    def quiz_data(self):
+        """ Returns - [(question_key, answer, definition, question_str), ...]] 
         
         Utilizes: subject_dict - subject specific dictionary {word: definition}
                   conjugate_present(verb) - method from Verb class
@@ -82,11 +83,12 @@ class VerbQuiz(Quiz, Verb):
 class QuizInterface():
     """ Handles User-facing quiz IO and scoretracking """
 
-    def __init__(self, quiz_data):
+    def __init__(self, quiz_data, quiz_type=None):
         """ Param: quiz_data - created by [Subject]Quiz object 
         (question_key, answer, definition, question_str) """
 
         self.quiz_data = quiz_data
+        self.quiz_type = quiz_type
         self.quiz_length = len(quiz_data)
         self.num_correct = 0
         self.num_wrong = 0
@@ -97,8 +99,8 @@ class QuizInterface():
         return (quiz_type, num_correct, num_wrong, timestamp) """
         for q in self.quiz_data:
             self.ask_question(q)
-        # TODO: complete the return statement!!!!!!!!!
-        return ('quiz_type', self.num_correct, self.num_wrong,
+        # TODO: implement the quiz_type return value
+        return (self.quiz_type, self.num_correct, self.num_wrong,
                 datetime.datetime)
 
     def ask_question(self, q):

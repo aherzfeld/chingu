@@ -12,7 +12,7 @@ class TestQuizDefaultSetup(unittest.TestCase):
 
     def setUp(self):
         """ Instantiate Quiz with default 10 questions """
-        self.quiz = Quiz(verb_list)
+        self.quiz = Quiz(verb_list, 'present')
 
     def tearDown(self):
         del self.quiz
@@ -26,7 +26,7 @@ class TestQuizCustomSetup(unittest.TestCase):
 
     def setUp(self):
         """ Instantiate Quiz with 20 questions """
-        self.quiz = Quiz(verb_list, 20)
+        self.quiz = Quiz(verb_list, quiz_length=20)
 
     def tearDown(self):
         del self.quiz
@@ -55,29 +55,29 @@ class TestVerbQuiz(unittest.TestCase):
         self.assertEqual(self.verbquiz._question('하다'),
             'What is the present tense form of 하다?')
 
-    def test_population_of_question_data(self):
-        data = self.verbquiz.question_data
+    def test_population_of_quiz_data(self):
+        data = self.verbquiz.quiz_data
         self.assertTrue(len(data), 20)
         
-    def test_population_of_question_data_verbs_in_subject_dict(self):
-        data = self.verbquiz.question_data
+    def test_population_of_quiz_data_verbs_in_subject_dict(self):
+        data = self.verbquiz.quiz_data
         for item in data:
             self.assertIn(item[0], self.verbquiz.subject_dict)
         
-    def test_population_of_question_data_definitions(self):
-        data = self.verbquiz.question_data
+    def test_population_of_quiz_data_definitions(self):
+        data = self.verbquiz.quiz_data
         for item in data:
             # ensure definitions are correct
             self.assertEqual(item[2], self.verbquiz.subject_dict[item[0]])
             
-    def test_population_of_question_data_conjugations(self):
-        data = self.verbquiz.question_data
+    def test_population_of_quiz_data_conjugations(self):
+        data = self.verbquiz.quiz_data
         for item in data:    
             # ensure conjugations are correct
             self.assertEqual(item[1], self.verbquiz.conjugate_present(item[0]))
 
-    def test_population_of_question_data_questions(self):
-        data = self.verbquiz.question_data
+    def test_population_of_quiz_data_questions(self):
+        data = self.verbquiz.quiz_data
         for item in data:
             # ensure question strings are properly formed
             self.assertIn(item[0], item[3])
@@ -87,7 +87,7 @@ class TestQuizInterfaceDefaultSetup(unittest.TestCase):
 
     def test_default_setup(self):
         self.quiz = VerbQuiz(verb_list)  # no quiz_length param
-        data = self.quiz.question_data
+        data = self.quiz.quiz_data
         self.interface = QuizInterface(data)
         self.assertEqual(self.interface.quiz_length, 10)
 
@@ -95,8 +95,8 @@ class TestQuizInterfaceDefaultSetup(unittest.TestCase):
 class TestQuizInterfaceCustomSetup(unittest.TestCase):
 
     def test_custom_setup(self):
-        self.quiz = VerbQuiz(verb_list, 20)
-        data = self.quiz.question_data
+        self.quiz = VerbQuiz(verb_list, quiz_length=20)
+        data = self.quiz.quiz_data
         self.interface = QuizInterface(data)
         self.assertEqual(self.interface.quiz_length, 20)
 
@@ -104,8 +104,8 @@ class TestQuizInterfaceCustomSetup(unittest.TestCase):
 class TestQuizInterfaceQuestionTracking(unittest.TestCase):
 
     def setUp(self):
-        self.quiz = VerbQuiz(verb_list, 20)
-        data = self.quiz.question_data
+        self.quiz = VerbQuiz(verb_list, quiz_length=20)
+        data = self.quiz.quiz_data
         self.interface = QuizInterface(data)
         self.interface.num_correct = 10
         self.interface.num_wrong = 5
@@ -136,9 +136,9 @@ class TestQuizInterfaceQuestionTracking(unittest.TestCase):
 class TestQuizInterfaceStartQuiz(unittest.TestCase):
 
     def setUp(self):
-        self.quiz = VerbQuiz(verb_list, 20)
-        data = self.quiz.question_data
-        self.interface = QuizInterface(data)    
+        self.quiz = VerbQuiz(verb_list, quiz_length=20)
+        data = self.quiz.quiz_data
+        self.interface = QuizInterface(data, self.quiz.quiz_type)    
 
     def tearDown(self):
         del self.quiz
@@ -187,7 +187,7 @@ class TestQuizInterfaceStartQuiz(unittest.TestCase):
     def test_start_quiz(self, mock_input):
         # need to simulate user input
         results = self.interface.start_quiz()
-        self.assertEqual(results[0], 'quiz_type')
+        self.assertEqual(results[0], 'present')
         # add assertEqual to quiz type once implemented
         self.assertIs(type(results[1]), int)
         self.assertEqual(results[1], self.interface.num_correct)
