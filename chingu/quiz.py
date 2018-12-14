@@ -1,6 +1,6 @@
 # Quiz parent class & subject-specific quiz sub-classes
 import random
-import datetime
+from datetime import datetime
 from abc import ABCMeta, abstractmethod
 from chingu.verb import Verb
 from chingu.verblist import verb_list
@@ -101,7 +101,7 @@ class QuizInterface():
             self.ask_question(q)
         # TODO: implement the quiz_type return value
         return (self.quiz_type, self.num_correct, self.num_wrong,
-                datetime.datetime)
+                datetime.utcnow())
 
     def ask_question(self, q):
         """ Increments num_correct / num_wrong based on user input
@@ -141,6 +141,16 @@ class QuizInterface():
     @property
     def questions_remaining(self):
         return self.quiz_length - (self.num_correct + self.num_wrong)
+
+    # TODO: print results method
+    @staticmethod
+    def print_results(results):
+        print('You completed a {} tense verb quiz on {}.\n\n\
+You got {} questions correct and {} questions wrong.\n'.format(results[0],
+    results[3].strftime('%x'), results[1], results[2]))
+        return True
+
+     
 
 
 
