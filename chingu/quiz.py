@@ -77,6 +77,12 @@ class VerbQuiz(Quiz, Verb):
         """ Receives question_key, returns formatted question str """
         return 'What is the present tense form of {}?'.format(question_key)
 
+    @property
+    def quiz_string(self):
+        """ Return quiz_type string to pass to QuizInterface """
+        return '{} tense Verb Quiz'.format(self.quiz_type)
+    
+
 
 # Maybe score tracking should be broken into its own class
 # TODO: inherit from a User object to track persistant quiz history
@@ -85,7 +91,8 @@ class QuizInterface():
 
     def __init__(self, quiz_data, quiz_type=None):
         """ Param: quiz_data - created by [Subject]Quiz object 
-        (question_key, answer, definition, question_str) """
+        (question_key, answer, definition, question_str) 
+        Param: quiz_type: Quiz.quiz_string"""
 
         self.quiz_data = quiz_data
         self.quiz_type = quiz_type
@@ -98,16 +105,37 @@ class QuizInterface():
         """ Loop through quiz_data and return results tuple.
         return (quiz_type, num_correct, num_wrong, timestamp) """
         for q in self.quiz_data:
-            self.ask_question(q)
+            self.print_feedback(self.feedback(self.ask_question(q)))
         # TODO: implement the quiz_type return value
         return (self.quiz_type, self.num_correct, self.num_wrong,
                 datetime.utcnow())
 
+    # maybe this should return T / F for feedback
     def ask_question(self, q):
-        """ Increments num_correct / num_wrong based on user input
+        """ Returns answer_result boolean, increments num_correct / num_wrong 
+        based on user input
+        
         Param: q = (question_key, answer, definition, question_str) """
+
         user_answer = self.get_input(q[3])
-        self.update_score(self.check_answer(q[1], user_answer))
+        answer_result = self.check_answer(q[1], user_answer)
+        self.update_score(answer_result)
+        return answer_result
+
+    # in progress , write test (% might need work)
+    def feedback(self, answer_result):
+        """ Returns feedback string to be printed by print_feedback
+        Param: answer_result - True if correct / False if incorrect"""
+        meta_data = '{}% correct with {} questions remaining.'.format(
+                self.score_percent * 100, self.questions_remaining)
+        if answer_result == True:
+            return('\nCorrect! ' + meta_data + '\n')
+        else:
+            return('\nHmm not quite. ' + meta_data + '\n')
+
+    @staticmethod
+    def print_feedback(feedback_string):
+        print(feedback_string)
 
     @staticmethod
     def get_input(question_string):
@@ -145,7 +173,7 @@ class QuizInterface():
     # TODO: print results method
     @staticmethod
     def print_results(results):
-        print('You completed a {} tense verb quiz on {}.\n\n\
+        print('You completed a {} on {}.\n\n\
 You got {} questions correct and {} questions wrong.\n'.format(results[0],
     results[3].strftime('%x'), results[1], results[2]))
         return True

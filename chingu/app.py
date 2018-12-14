@@ -10,7 +10,7 @@ print('\nWelcome to Chingu, your Korean study buddy. ^^\n')
 verbquiz = quiz.VerbQuiz(quiz.verb_list, quiz_length=2)
 
 quiz_data = verbquiz.quiz_data
-quiz_type = verbquiz.quiz_type
+quiz_type = verbquiz.quiz_string
 
 
 io = quiz.QuizInterface(quiz_data, quiz_type)
