@@ -4,7 +4,26 @@ import quiz
 print('\nWelcome to Chingu, your Korean study buddy. ^^\n')
 
 
+####### TESTING SECTION #########
 # TODO: Allow user to configure quiz options
+setup = quiz.QuizSetup()
+
+newquiz = setup.create_quiz()
+
+quiz_data = newquiz.quiz_data
+quiz_type = newquiz.quiz_string
+
+
+io = quiz.QuizInterface(quiz_data, quiz_type)
+
+results = io.start_quiz()
+
+print('\nThank you for trying Chingu!\n')
+
+io.print_results(results)
+
+quit()
+####### END TESTING SECTION #########
 
 # instantiate default VerbQuiz - quiz_type: present, quiz_length: 10
 verbquiz = quiz.VerbQuiz(quiz.verb_list, quiz_length=2)

@@ -83,6 +83,34 @@ class VerbQuiz(Quiz, Verb):
         return '{} tense Verb Quiz'.format(self.quiz_type)
     
 
+class QuizSetup():
+    """ Gathers user input to instantiate quiz """
+
+    # NounQuiz not yet implemented
+    categories = {'verb': (VerbQuiz, verb_list),
+                  'noun': ('NounQuiz', 'noun_list')}
+
+    types = {'verb': ('present', 'future'),
+             'noun': ('demo1', 'demo2')}  # not yet implemented
+
+    def __init__(self):
+        """ Prompts user for input upon initialization """
+
+        self.category = None
+        while self.category not in QuizSetup.categories:
+            self.category = input('Choose a quiz - Options: {}:  '.format(
+                [key for key in QuizSetup.categories]))
+        self.type = None
+        self.length = None
+        self.quizclass = self.categories[self.category][0]
+        self.dict = self.categories[self.category][1]
+        # self.dict =
+
+    def create_quiz(self):
+        """ Returns quiz object based on init specifications """
+
+        return self.quizclass(self.dict)
+
 
 # Maybe score tracking should be broken into its own class
 # TODO: inherit from a User object to track persistant quiz history
