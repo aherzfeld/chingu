@@ -182,6 +182,20 @@ class TestQuizInterfaceStartQuiz(unittest.TestCase):
         updated_num_correct = self.interface.num_correct
         self.assertEqual(initial_num_correct, updated_num_correct - 1)
 
+    # use patch to add context manager
+    @patch('chingu.quiz.QuizInterface.score_percent', return_value='.50')
+    def test_give_positive_feedback_after_question_answered_correctly(self,
+        mock_method):
+        self.assertEqual(self.interface.feedback(True),
+            'Correct! 50% correct with 20 questions remaining.')
+
+    # use patch to add context manager
+    def test_give_negative_feedback_after_question_answered_incorrectly(self):
+        self.interface.score_percent = .70
+        self.interface.questions_remaining = 2
+        self.assertEqual(self.interface.feedback(True), 'Correct! 70% correct\
+            with 2 questions remaining.')
+
     # I don't trust this test - learn more and refactor
     @patch('chingu.quiz.QuizInterface.get_input', return_value='해요')
     def test_start_quiz(self, mock_input):
@@ -193,7 +207,7 @@ class TestQuizInterfaceStartQuiz(unittest.TestCase):
         self.assertEqual(results[1], self.interface.num_correct)
         self.assertIs(type(results[2]), int)
         self.assertEqual(results[2], self.interface.num_wrong)
-        self.assertIs(results[3], datetime.datetime)
+        self.assertIs(type(results[3]), datetime.datetime)
         self.assertEqual(self.interface.quiz_length,
                          self.interface.questions_asked)
 
