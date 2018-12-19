@@ -115,7 +115,6 @@ class QuizSetup():
 
         return self.quizclass(self.dict, self.type, self.length)
 
-    # TODO: create io object
     def create_quiz(self):
         """ Returns Instantiated QuizInterface object """
         quiz = self.setup_quiz()
