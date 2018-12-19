@@ -90,7 +90,7 @@ class QuizSetup():
     categories = {'verb': (VerbQuiz, verb_list),
                   'noun': ('NounQuiz', 'noun_list')}
 
-    types = {'verb': ('present', 'future'),
+    types = {'verb': ('definition', 'present', 'future'),
              'noun': ('demo1', 'demo2')}  # not yet implemented
 
     def __init__(self):
@@ -110,10 +110,19 @@ class QuizSetup():
         self.quizclass = self.categories[self.category][0]
         self.dict = self.categories[self.category][1]
 
-    def create_quiz(self):
+    def setup_quiz(self):
         """ Returns quiz object based on init specifications """
 
         return self.quizclass(self.dict, self.type, self.length)
+
+    # TODO: create io object
+    def create_quiz(self):
+        """ Returns Instantiated QuizInterface object """
+        quiz = self.setup_quiz()
+        quiz_data = quiz.quiz_data
+        quiz_type = quiz.quiz_string
+
+        return QuizInterface(quiz_data, quiz_type)
 
 
 # Maybe score tracking should be broken into its own class
