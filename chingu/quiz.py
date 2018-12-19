@@ -75,7 +75,7 @@ class VerbQuiz(Quiz, Verb):
     @staticmethod
     def _question(question_key):
         """ Receives question_key, returns formatted question str """
-        return 'What is the present tense form of {}?'.format(question_key)
+        return '\nWhat is the present tense form of {}?'.format(question_key)
 
     @property
     def quiz_string(self):
@@ -101,15 +101,19 @@ class QuizSetup():
             self.category = input('Choose a quiz - Options: {}:  '.format(
                 [key for key in QuizSetup.categories]))
         self.type = None
+        while self.type not in QuizSetup.types[self.category]:
+            self.type = input('Choose a category - Options: {}:  '.format(
+                [option for option in QuizSetup.types[self.category]]))
         self.length = None
+        while self.length not in range(1, 20):
+            self.length = int(input('How many questions? (1 - 20):  '))
         self.quizclass = self.categories[self.category][0]
         self.dict = self.categories[self.category][1]
-        # self.dict =
 
     def create_quiz(self):
         """ Returns quiz object based on init specifications """
 
-        return self.quizclass(self.dict)
+        return self.quizclass(self.dict, self.type, self.length)
 
 
 # Maybe score tracking should be broken into its own class
