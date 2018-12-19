@@ -13,9 +13,7 @@ class Quiz(object):
             subject_dict - subject specific dict (e.i. verb_list)
 
     Attributes:
-        quiz_length: number of questions quiz will test
-        num_correct: number of questions answered correctly
-        num_wrong: number of questions answered incorrectly """
+        quiz_length: number of questions quiz will test """
 
     __metaclass__ = ABCMeta
 
@@ -57,6 +55,12 @@ class VerbQuiz(Quiz, Verb):
 
     def __init__(self, subject_dict, quiz_type='present', quiz_length=10):
         super().__init__(subject_dict, quiz_type, quiz_length)
+        
+        types = {'definition': self.subject_dict.get,
+                 'present': self.conjugate_present,
+                 'future': 'not yet implemented'}
+        
+        self.type_method = types[self.quiz_type]
 
     # modify to accept option_method as arg
     @property
@@ -68,14 +72,18 @@ class VerbQuiz(Quiz, Verb):
                   _question_keys - list of keys for subject_dict from Quiz
                   option_method - method corresponding to quiz_option """
         
-        return [(q, self.conjugate_present(q), self.subject_dict[q],
+        return [(q, self.type_method(q), self.subject_dict[q],
                 self._question(q)) for q in self._question_keys]
 
     # modify to accept option_method as arg
-    @staticmethod
-    def _question(question_key):
+    def _question(self, question_key):
         """ Receives question_key, returns formatted question str """
-        return '\nWhat is the present tense form of {}?'.format(question_key)
+        
+        if self.quiz_type == 'definition':
+            return '\nWhat is the definition of {}?'.format(question_key)
+        else:
+            return '\nWhat is the {} tense form of {}?'.format(
+                self.quiz_type, question_key)
 
     @property
     def quiz_string(self):
@@ -157,21 +165,26 @@ class QuizInterface():
         
         Param: q = (question_key, answer, definition, question_str) """
 
+        answer = q[1]
         user_answer = self.get_input(q[3])
         answer_result = self.check_answer(q[1], user_answer)
         self.update_score(answer_result)
-        return answer_result
+        return (answer_result, answer)
 
     # in progress , write test (% might need work)
-    def feedback(self, answer_result):
+    def feedback(self, answer_results):
         """ Returns feedback string to be printed by print_feedback
-        Param: answer_result - True if correct / False if incorrect"""
+        Param: answer_results tuple 
+        [0] = True if correct / False if incorrect
+        [1] = correct answer """
+
         meta_data = '{}% correct with {} questions remaining.'.format(
                 self.score_percent * 100, self.questions_remaining)
-        if answer_result == True:
+        if answer_results[0] == True:
             return('\nCorrect! ' + meta_data + '\n')
         else:
-            return('\nHmm not quite. ' + meta_data + '\n')
+            return('\nHmm not quite. The correct answer is {}.\n'.format(
+                answer_results[1]) + meta_data + '\n')
 
     @staticmethod
     def print_feedback(feedback_string):
@@ -185,7 +198,8 @@ class QuizInterface():
     @staticmethod
     def check_answer(answer, user_answer):
         """ Return True if user input answer is correct """
-        return answer == user_answer
+        return user_answer in answer  # this is for definition precision
+        # return answer == user_answer
 
     # can this be better implemented with setters, getters?
     def update_score(self, boolean):
@@ -210,7 +224,6 @@ class QuizInterface():
     def questions_remaining(self):
         return self.quiz_length - (self.num_correct + self.num_wrong)
 
-    # TODO: print results method
     @staticmethod
     def print_results(results):
         print('You completed a {} on {}.\n\n\
