@@ -178,8 +178,9 @@ class QuizInterface():
         [0] = True if correct / False if incorrect
         [1] = correct answer """
 
-        meta_data = '{}% correct with {} questions remaining.'.format(
-                self.score_percent * 100, self.questions_remaining)
+        meta_data = '{}% correct with {} question{} remaining.'.format(
+                self.score_percent * 100, self.questions_remaining,
+                '' if self.questions_remaining == 1 else 's')
         if answer_results[0] == True:
             return('\nCorrect! ' + meta_data + '\n')
         else:
@@ -227,8 +228,9 @@ class QuizInterface():
     @staticmethod
     def print_results(results):
         print('You completed a {} on {}.\n\n\
-You got {} questions correct and {} questions wrong.\n'.format(results[0],
-    results[3].strftime('%x'), results[1], results[2]))
+You got {} question{} correct and {} question{} wrong.\n'.format(results[0],
+    results[3].strftime('%x'), results[1], '' if results[1] == 1 else 's',
+    results[2], '' if results[2] == 1 else 's'))
         return True
 
      
