@@ -84,11 +84,6 @@ class VerbQuiz(Quiz, Verb):
         else:
             return '\nWhat is the {} tense form of {}?'.format(
                 self.quiz_type, question_key)
-
-    @property
-    def quiz_string(self):
-        """ Return quiz_type string to pass to QuizInterface """
-        return '{} tense Verb Quiz'.format(self.quiz_type)
     
 
 class QuizSetup():
@@ -127,9 +122,9 @@ class QuizSetup():
         """ Returns Instantiated QuizInterface object """
         quiz = self.setup_quiz()
         quiz_data = quiz.quiz_data
-        quiz_type = quiz.quiz_string
+        quiz_specs = (self.category, self.type)
 
-        return QuizInterface(quiz_data, quiz_type)
+        return QuizInterface(quiz_data, quiz_specs)
 
 
 # Maybe score tracking should be broken into its own class
@@ -137,13 +132,13 @@ class QuizSetup():
 class QuizInterface():
     """ Handles User-facing quiz IO and scoretracking """
 
-    def __init__(self, quiz_data, quiz_type=None):
+    def __init__(self, quiz_data, quiz_specs=None):
         """ Param: quiz_data - created by [Subject]Quiz object 
         (question_key, answer, definition, question_str) 
         Param: quiz_type: Quiz.quiz_string"""
 
         self.quiz_data = quiz_data
-        self.quiz_type = quiz_type
+        self.quiz_specs = quiz_specs
         self.quiz_length = len(quiz_data)
         self.num_correct = 0
         self.num_wrong = 0
@@ -155,7 +150,7 @@ class QuizInterface():
         for q in self.quiz_data:
             self.print_feedback(self.feedback(self.ask_question(q)))
         # TODO: implement the quiz_type return value
-        return (self.quiz_type, self.num_correct, self.num_wrong,
+        return (self.quiz_specs, self.num_correct, self.num_wrong,
                 datetime.utcnow())
 
     # maybe this should return T / F for feedback
@@ -226,11 +221,19 @@ class QuizInterface():
     def questions_remaining(self):
         return self.quiz_length - (self.num_correct + self.num_wrong)
 
-    @staticmethod
-    def print_results(results):
+    @property
+    def quiz_string(self):
+        """ Return quiz_string for printing based on quiz_specs """
+        if self.quiz_specs[1] == 'definition':
+            return f'{self.quiz_specs[0]} {self.quiz_specs[1]} quiz'
+        else:
+            return f'{self.quiz_specs[1]} tense {self.quiz_specs[0]} quiz'
+
+    def print_results(self, results):
         print('You completed a {} on {}.\n\n\
-You got {} question{} correct and {} question{} wrong.\n'.format(results[0],
-    results[3].strftime('%x'), results[1], '' if results[1] == 1 else 's',
+You got {} question{} correct and {} question{} wrong.\n'.format(
+    self.quiz_string, results[3].strftime('%x'),
+    results[1], '' if results[1] == 1 else 's',
     results[2], '' if results[2] == 1 else 's'))
         return True
 
