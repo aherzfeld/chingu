@@ -178,8 +178,8 @@ class QuizInterface():
         [0] = True if correct / False if incorrect
         [1] = correct answer """
 
-        meta_data = '{}% correct with {} question{} remaining.'.format(
-                self.score_percent * 100, self.questions_remaining,
+        meta_data = '{:.0%} correct with {} question{} remaining.'.format(
+                self.score_percent, self.questions_remaining,
                 '' if self.questions_remaining == 1 else 's')
         if answer_results[0] == True:
             return('\nCorrect! ' + meta_data + '\n')
@@ -199,7 +199,8 @@ class QuizInterface():
     @staticmethod
     def check_answer(answer, user_answer):
         """ Return True if user input answer is correct """
-        return user_answer in answer  # this is for definition precision
+        # this is for definition precision flexibility
+        return user_answer in answer and len(user_answer) >= (len(answer) / 3)
         # return answer == user_answer
 
     # can this be better implemented with setters, getters?
