@@ -64,6 +64,7 @@ class Quiz(object):
         type_method - algorithm to generate answer from key based on type
         length - number of questions quiz will test (param: quiz_length) 
         key_list - (quiz_length) random keys from dictionary
+        question_list - (quiz_length) list of Question objects
     """
 
     __metaclass__ = ABCMeta
@@ -75,23 +76,29 @@ class Quiz(object):
 
     def __init__(self, quiz_type=None, quiz_length=10):
         self.type = quiz_type
-        self.length = quiz_length
+        self.length = int(quiz_length)
+        # add underscore to make private??
         self.type_method = self.types[self.type]
+        # add underscore to make private??
         self.key_list = self.make_key_list
+        self.question_list = self.make_question_list
 
     def __str__(self):
-        pass
-
-    # implement this fully here , remove from VerbQuiz
-    def question_data(self):
-        """ Returns list of Question objects - one for each key in key_list """
         pass
 
     @property
     def make_key_list(self):
         """ Returns (quiz_length) random keys from dictionary """
         key_list = list(self.dictionary)
-        return random.sample(key_list, self.quiz_length)
+        return random.sample(key_list, self.length)
+
+    # implement this fully here , remove from VerbQuiz
+    @property
+    def make_question_list(self):
+        """ Returns list of Question objects - one for each key in key_list """
+
+        return [Question(k, self.type_method(k), self.dictionary[k], self.type)
+                for k in self.key_list]
 
 
 class VerbQuiz(Quiz, Verb):
@@ -111,6 +118,7 @@ class VerbQuiz(Quiz, Verb):
         type_method - algorithm to generate answer from key based on type
         length - number of questions (param: quiz_length)
         key_list - (quiz_length) random keys from dictionary
+        question_list - (quiz_length) list of Question objects
     """
 
     category = 'verb'
@@ -122,19 +130,19 @@ class VerbQuiz(Quiz, Verb):
     def __init__(self, quiz_type='present', quiz_length=10):
         super().__init__(quiz_type, quiz_length)
 
-        # TODO: populate quiz_data upon instantiation (list of Questions)
 
-    @property
-    def quiz_data(self):
-        """ Returns - [(question_key, answer, definition, question_str), ...]]
+    # DELETE THIS AFTER RUNNING TESTS
+    # @property
+    # def quiz_data(self):
+    #     """ Returns - [(question_key, answer, definition, question_str), ...]]
 
-        Utilizes: dictionary - subject specific dictionary {word: definition}
-                  conjugate_present(verb) - method from Verb class
-                  _question_keys - list of keys for dictionary from Quiz
-                  option_method - method corresponding to quiz_option """
+    #     Utilizes: dictionary - subject specific dictionary {word: definition}
+    #               conjugate_present(verb) - method from Verb class
+    #               _question_keys - list of keys for dictionary from Quiz
+    #               option_method - method corresponding to quiz_option """
 
-        return [(q, self.type_method(q), self.dictionary[q],
-                 self._question(q)) for q in self.key_list]
+    #     return [(q, self.type_method(q), self.dictionary[q],
+    #              self._question(q)) for q in self.key_list]
 
 
 class QuizSetup():
