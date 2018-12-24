@@ -22,7 +22,6 @@ class TestQuizSetup(unittest.TestCase):
 
 
 class TestQuestion(unittest.TestCase):
-    """ Receive key as arg and has access to subject_dict """
 
     def setUp(self):
         # Question(key, answer, definition, quiz_type)
@@ -49,14 +48,40 @@ class TestQuestion(unittest.TestCase):
 class TestVerbQuiz(unittest.TestCase):
 
     def setUp(self):
-        pass
+        self.verbquiz = quiz.VerbQuiz(quiz_type='present', quiz_length=15)
 
     def tearDown(self):
-        pass
+        del self.verbquiz
 
-    def test_population_of_quiz_data(self):
-        pass
+    def test_quiz_type(self):
+        self.assertEqual(self.verbquiz.type, 'present')
 
+    def test_creation_of_key_list_with_proper_length(self):
+        key_list = self.verbquiz.make_key_list
+        self.assertEqual(len(key_list), 15)
+
+    def test_keys_in_key_list_are_from_verb_dict(self):
+        key_list = self.verbquiz.make_key_list
+        for key in key_list:
+            self.assertIn(key, quiz.verb_dict)
+
+    def test_creation_of_question_list_with_proper_length(self):
+        question_list = self.verbquiz.make_question_list
+        self.assertEqual(len(question_list), 15)
+
+    def test_creation_of_question_list_with_question_objects(self):
+        question_list = self.verbquiz.make_question_list
+        for q in question_list:
+            self.assertIsInstance(q, quiz.Question)
+
+    def test_proper_instantion_of_question_objects(self):
+        question_list = self.verbquiz.make_question_list
+        q = question_list[0]
+        # check that answer was properly calculated
+        self.assertEqual(q.answer, self.verbquiz.type_method(q.key))
+        self.assertEqual(q.definition, self.verbquiz.dictionary[q.key])
+        self.assertIs(type(q.question), str)
+        self.assertEqual(q.correct, None)
 
 if __name__ == '__main__':
     unittest.main()
