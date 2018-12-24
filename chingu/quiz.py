@@ -73,7 +73,7 @@ class VerbQuiz(Quiz, Verb):
                   option_method - method corresponding to quiz_option """
 
         return [(q, self.type_method(q), self.subject_dict[q],
-                self._question(q)) for q in self._question_keys]
+                 self._question(q)) for q in self._question_keys]
 
     # modify to accept option_method as arg
     def _question(self, question_key):
