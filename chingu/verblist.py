@@ -1,7 +1,7 @@
 # Top 100 Most Useful Korean Verbs
 # Verb / Definition pairs
 
-verb_list = {
+verb_dict = {
     "오다": "to come",
     "마시다": "to drink",
     "먹다": "to eat",
