@@ -53,26 +53,26 @@ class TestVerbQuiz(unittest.TestCase):
 
     def test_create_questions(self):
         self.assertEqual(self.verbquiz._question('하다'),
-            'What is the present tense form of 하다?')
+                         'What is the present tense form of 하다?')
 
     def test_population_of_quiz_data(self):
         data = self.verbquiz.quiz_data
         self.assertTrue(len(data), 20)
-        
+
     def test_population_of_quiz_data_verbs_in_subject_dict(self):
         data = self.verbquiz.quiz_data
         for item in data:
             self.assertIn(item[0], self.verbquiz.subject_dict)
-        
+
     def test_population_of_quiz_data_definitions(self):
         data = self.verbquiz.quiz_data
         for item in data:
             # ensure definitions are correct
             self.assertEqual(item[2], self.verbquiz.subject_dict[item[0]])
-            
+
     def test_population_of_quiz_data_conjugations(self):
         data = self.verbquiz.quiz_data
-        for item in data:    
+        for item in data:
             # ensure conjugations are correct
             self.assertEqual(item[1], self.verbquiz.conjugate_present(item[0]))
 
@@ -138,7 +138,7 @@ class TestQuizInterfaceStartQuiz(unittest.TestCase):
     def setUp(self):
         self.quiz = VerbQuiz(verb_list, quiz_length=20)
         data = self.quiz.quiz_data
-        self.interface = QuizInterface(data, self.quiz.quiz_type)    
+        self.interface = QuizInterface(data, self.quiz.quiz_type)
 
     def tearDown(self):
         del self.quiz
@@ -152,7 +152,7 @@ class TestQuizInterfaceStartQuiz(unittest.TestCase):
 
     def test_check_answer_correct_answer(self):
         self.assertTrue(self.interface.check_answer('해요', '해요'))
-        
+
     def test_check_answer_wrong_answer(self):
         self.assertFalse(self.interface.check_answer('해요', '해'))
 
@@ -161,13 +161,13 @@ class TestQuizInterfaceStartQuiz(unittest.TestCase):
         self.interface.update_score(True)
         updated_num_correct = self.interface.num_correct
         self.assertEqual(initial_num_correct, updated_num_correct - 1)
-        
+
     def test_update_score_wrong_answer(self):
         initial_num_wrong = self.interface.num_wrong
         self.interface.update_score(False)
         updated_num_wrong = self.interface.num_wrong
         self.assertEqual(initial_num_wrong, updated_num_wrong - 1)
-        
+
     def test_update_score_return_boolean_value(self):
         self.assertFalse(self.interface.update_score('not_bool'))
         self.assertTrue(self.interface.update_score(True))

@@ -87,7 +87,7 @@ class Quiz(object):
         self.num_wrong = 0
         self.date_taken = None
 
-    # can you string formatting for title case
+    # can use string formatting for title case
     def __str__(self):
         """ Return quiz_string for printing based on quiz_specs """
 
@@ -167,8 +167,8 @@ class QuizSetup():
     """ Gathers user input to instantiate quiz """
 
     # NounQuiz not yet implemented
-    categories = {'verb': (VerbQuiz, verb_dict),
-                  'noun': ('NounQuiz', 'noun_dict')}
+    categories = {'verb': VerbQuiz,
+                  'noun': 'NounQuiz'}
 
     types = {'verb': ('definition', 'present', 'future'),
              'noun': ('demo1', 'demo2')}  # not yet implemented
@@ -177,31 +177,37 @@ class QuizSetup():
         """ Prompts user for input upon initialization """
 
         self.category = None
+        self.get_category()
+        self.type = None
+        self.get_type()
+        self.length = None
+        self.get_length()
+        self.quizclass = self.categories[self.category]
+
+    def get_category(self):
         while self.category not in QuizSetup.categories:
             self.category = input('Choose a quiz - Options: {}:  '.format(
-                [key for key in QuizSetup.categories]))
-        self.type = None
+                                  [key for key in QuizSetup.categories]))
+
+    def get_type(self):
         while self.type not in QuizSetup.types[self.category]:
             self.type = input('Choose a category - Options: {}:  '.format(
                 [option for option in QuizSetup.types[self.category]]))
-        self.length = None
+
+    def get_length(self):
         while self.length not in range(1, 20):
             self.length = int(input('How many questions? (1 - 20):  '))
-        self.quizclass = self.categories[self.category][0]
-        self.dict = self.categories[self.category][1]
 
     def setup_quiz(self):
         """ Returns quiz object based on init specifications """
 
-        return self.quizclass(self.dict, self.type, self.length)
+        return self.quizclass(self.type, self.length)
 
     def create_quiz(self):
         """ Returns Instantiated QuizInterface object """
         quiz = self.setup_quiz()
-        quiz_data = quiz.quiz_data
-        quiz_specs = (self.category, self.type)
 
-        return QuizInterface(quiz_data, quiz_specs)
+        return QuizInterface(quiz)
 
 
 # TODO: pass Quiz and User Instances as args
@@ -220,6 +226,7 @@ class QuizInterface():
     @staticmethod
     def get_input(question_string):
         """ Prompt user for answer input. Returns user_answer string """
+
         return input(question_string + '  ')
 
     # TODO: update to use question object DONE
@@ -231,7 +238,7 @@ class QuizInterface():
         """
 
         user_answer = self.get_input(question.question)
-        answer_result = question.check(question.answer, user_answer)
+        answer_result = question.check(user_answer)
         self.quiz.update_score(answer_result)
         return question
 
@@ -269,9 +276,11 @@ class QuizInterface():
         return self.quiz
 
     def print_results(self):
+        """ Prints formatted string summary of post-quiz information"""
+
         print('You completed a {} on {}.\n\n\
             You got {} question{} correct and {} question{} wrong.\n'.format(
-            self.quiz.__str__, self.quiz.date_taken.strftime('%x'),
+            self.quiz.__str__(), self.quiz.date_taken.strftime('%x'),
             self.quiz.num_correct, '' if self.quiz.num_correct == 1 else 's',
             self.quiz.num_wrong, '' if self.quiz.num_wrong == 1 else 's'))
         return True
