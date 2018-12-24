@@ -3,31 +3,60 @@ import random
 from datetime import datetime
 from abc import ABCMeta, abstractmethod
 from chingu.verb import Verb
-from chingu.verblist import verb_list
+from chingu.verblist import verb_dict
+
+
+class Question():
+    """ Question object that will be a part of a Quiz's quiz_data
+
+    Attributes:
+        key - word/item to be tested from dictionary
+        answer - correct answer generated via Quiz.type_method
+        definition - word definition
+        question - question string for presentation to user
+        correct - boolean, True if user answered correctly
+    """
+
+    # currently in VerbQuiz
+    def question_string(self):
+        pass
+
+    # currently in QuizInterface
+    def check(self, user_answer):
+        pass
 
 
 class Quiz(object):
     """ Provides general quiz functionality. Instantiated for each quiz.
 
-    Params: quiz_length - how many questions the quiz will be
-            subject_dict - subject specific dict (e.i. verb_list)
+    Params:
+        quiz_type - [category] quiz subtype (param: quiz_type)
+        quiz_length - how many questions the quiz will be
+
+    Class Attributes:
+        category - Category of child quiz class (i.e. 'verb')
+        dictionary - subject specific dict (i.e. verb_dict)
+        types - dict of subtypes(keys) with corresponding methods(values)
 
     Attributes:
-        quiz_length: number of questions quiz will test """
+        type - category specific subtype (i.e. 'definition')
+        type_method - algorithm to generate answer from key based on type
+        length: number of questions quiz will test (param: quiz_length) """
 
     __metaclass__ = ABCMeta
 
-    def __init__(self, subject_dict, quiz_type=None, quiz_length=10):
-        self.subject_dict = subject_dict
-        self.quiz_type = quiz_type
-        self.quiz_length = quiz_length
+    # these will be class variables within each [Category]Quiz child class
+    category = None
+    dictionary = None
+    types = None
 
-    # Instead of this, create a __str__ method
-    # @property
-    # @abstractmethod
-    # def quiz_type():
-    #     """ Return a string representing what type of quiz this is """
-    #     pass
+    def __init__(self, quiz_type=None, quiz_length=10):
+        self.type = quiz_type
+        self.length = quiz_length
+        self.type_method = self.types[self.type]
+
+    def __str__(self):
+        pass
 
     @abstractmethod
     def question_data(self):
@@ -41,38 +70,48 @@ class Quiz(object):
 
     @property
     def _question_keys(self):
-        """ Returns (quiz_length) random keys from subject_dict """
-        key_list = list(self.subject_dict)
+        """ Returns (quiz_length) random keys from dictionary """
+        key_list = list(self.dictionary)
         return random.sample(key_list, self.quiz_length)
 
 
 class VerbQuiz(Quiz, Verb):
     """ Main purpose is to create question_data to pass to QuizInterface
 
-    Param: quiz_length - how many questions the quiz will be
-    Param: subject_dict - always verb_dict in the case of VerbQuiz
+    Params:
+        quiz_type - Verb quiz subtype (i.e. 'present')
+        quiz_length - how many questions the quiz will be
+
+    Class Attributes:
+        category - Category of child quiz class (i.e. 'verb')
+        dictionary - subject specific dict (i.e. verb_dict)
+        types - dict of subtypes(keys) with corresponding methods(values)
+
+    Attributes:
+        type - Verb category quiz subtype (param: quiz_type)
+        type_method - algorithm to generate answer from key based on type
+        length - number of questions (param: quiz_length)
     """
 
-    def __init__(self, subject_dict, quiz_type='present', quiz_length=10):
-        super().__init__(subject_dict, quiz_type, quiz_length)
+    category = 'verb'
+    dictionary = verb_dict
+    types = {'definition': dictionary.get,
+             'present': Verb.conjugate_present,
+             'future': 'not yet implemented'}
 
-        types = {'definition': self.subject_dict.get,
-                 'present': self.conjugate_present,
-                 'future': 'not yet implemented'}
+    def __init__(self, quiz_type='present', quiz_length=10):
+        super().__init__(quiz_type, quiz_length)
 
-        self.type_method = types[self.quiz_type]
-
-    # modify to accept option_method as arg
     @property
     def quiz_data(self):
         """ Returns - [(question_key, answer, definition, question_str), ...]]
 
-        Utilizes: subject_dict - subject specific dictionary {word: definition}
+        Utilizes: dictionary - subject specific dictionary {word: definition}
                   conjugate_present(verb) - method from Verb class
-                  _question_keys - list of keys for subject_dict from Quiz
+                  _question_keys - list of keys for dictionary from Quiz
                   option_method - method corresponding to quiz_option """
 
-        return [(q, self.type_method(q), self.subject_dict[q],
+        return [(q, self.type_method(q), self.dictionary[q],
                  self._question(q)) for q in self._question_keys]
 
     # modify to accept option_method as arg
