@@ -45,6 +45,7 @@ class TestQuestion(unittest.TestCase):
         self.assertFalse(self.question.check('와아'))
 
 
+# still need to test additional methods (maybe covered in quiz io)
 class TestVerbQuiz(unittest.TestCase):
 
     def setUp(self):
@@ -82,6 +83,35 @@ class TestVerbQuiz(unittest.TestCase):
         self.assertEqual(q.definition, self.verbquiz.dictionary[q.key])
         self.assertIs(type(q.question), str)
         self.assertEqual(q.correct, None)
+
+
+class TestQuizInterface(unittest.TestCase):
+
+    def setUp(self):
+        pass
+
+    def tearDown(self):
+        pass
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 if __name__ == '__main__':
