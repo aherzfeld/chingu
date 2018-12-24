@@ -9,6 +9,8 @@ from chingu.verblist import verb_dict
 class Question():
     """ Question object that will be a part of a Quiz's quiz_data
 
+    Param: key_list - (quiz_length) random keys from dictionary
+
     Attributes:
         key - word/item to be tested from dictionary
         answer - correct answer generated via Quiz.type_method
@@ -17,13 +19,32 @@ class Question():
         correct - boolean, True if user answered correctly
     """
 
-    # currently in VerbQuiz
-    def question_string(self):
-        pass
+    # these param will have to be prepared by Quiz
+    def __init__(self, key, answer, definition, quiz_type):
+        self.key = key
+        self.answer = answer
+        self.definition = definition
+        self.question = self.question_string(key, quiz_type)
+        self.correct = None
+
+    @staticmethod
+    def question_string(key, quiz_type):
+        """ Receives key & quiz_type, returns formatted question str """
+
+        if quiz_type == 'definition':
+            return '\nWhat is the definition of {}?'.format(key)
+        else:
+            return '\nWhat is the {} tense form of {}?'.format(
+                quiz_type, key)
 
     # currently in QuizInterface
     def check(self, user_answer):
-        pass
+        """ Return True if user input answer is correct """
+
+        # the length check allows for incomplete, but close enough definitions
+        self.correct = user_answer in self.answer and (
+            len(user_answer) >= (len(self.answer) / 3))
+        return self.correct
 
 
 class Quiz(object):
@@ -41,11 +62,13 @@ class Quiz(object):
     Attributes:
         type - category specific subtype (i.e. 'definition')
         type_method - algorithm to generate answer from key based on type
-        length: number of questions quiz will test (param: quiz_length) """
+        length - number of questions quiz will test (param: quiz_length) 
+        key_list - (quiz_length) random keys from dictionary
+    """
 
     __metaclass__ = ABCMeta
 
-    # these will be class variables within each [Category]Quiz child class
+    # these will be class variables unique to each [Category]Quiz child class
     category = None
     dictionary = None
     types = None
@@ -54,22 +77,18 @@ class Quiz(object):
         self.type = quiz_type
         self.length = quiz_length
         self.type_method = self.types[self.type]
+        self.key_list = self.make_key_list
 
     def __str__(self):
         pass
 
-    @abstractmethod
+    # implement this fully here , remove from VerbQuiz
     def question_data(self):
-        """ Returns (question_key, answer, definition, question_str) """
-        pass
-
-    @abstractmethod
-    def _question(question_key):
-        """ Receives question_key and returns formatted string """
+        """ Returns list of Question objects - one for each key in key_list """
         pass
 
     @property
-    def _question_keys(self):
+    def make_key_list(self):
         """ Returns (quiz_length) random keys from dictionary """
         key_list = list(self.dictionary)
         return random.sample(key_list, self.quiz_length)
@@ -91,6 +110,7 @@ class VerbQuiz(Quiz, Verb):
         type - Verb category quiz subtype (param: quiz_type)
         type_method - algorithm to generate answer from key based on type
         length - number of questions (param: quiz_length)
+        key_list - (quiz_length) random keys from dictionary
     """
 
     category = 'verb'
@@ -102,6 +122,8 @@ class VerbQuiz(Quiz, Verb):
     def __init__(self, quiz_type='present', quiz_length=10):
         super().__init__(quiz_type, quiz_length)
 
+        # TODO: populate quiz_data upon instantiation (list of Questions)
+
     @property
     def quiz_data(self):
         """ Returns - [(question_key, answer, definition, question_str), ...]]
@@ -112,24 +134,14 @@ class VerbQuiz(Quiz, Verb):
                   option_method - method corresponding to quiz_option """
 
         return [(q, self.type_method(q), self.dictionary[q],
-                 self._question(q)) for q in self._question_keys]
-
-    # modify to accept option_method as arg
-    def _question(self, question_key):
-        """ Receives question_key, returns formatted question str """
-
-        if self.quiz_type == 'definition':
-            return '\nWhat is the definition of {}?'.format(question_key)
-        else:
-            return '\nWhat is the {} tense form of {}?'.format(
-                self.quiz_type, question_key)
+                 self._question(q)) for q in self.key_list]
 
 
 class QuizSetup():
     """ Gathers user input to instantiate quiz """
 
     # NounQuiz not yet implemented
-    categories = {'verb': (VerbQuiz, verb_list),
+    categories = {'verb': (VerbQuiz, verb_dict),
                   'noun': ('NounQuiz', 'noun_list')}
 
     types = {'verb': ('definition', 'present', 'future'),
@@ -228,12 +240,12 @@ class QuizInterface():
         """ Prompt user for answer input. Returns user_answer string """
         return input(question_string + '  ')
 
+    # implementing in Question , remove from here
     @staticmethod
     def check_answer(answer, user_answer):
         """ Return True if user input answer is correct """
         # this is for definition precision flexibility
         return user_answer in answer and len(user_answer) >= (len(answer) / 3)
-        # return answer == user_answer
 
     # can this be better implemented with setters, getters?
     def update_score(self, boolean):
