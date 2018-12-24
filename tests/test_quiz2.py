@@ -83,5 +83,6 @@ class TestVerbQuiz(unittest.TestCase):
         self.assertIs(type(q.question), str)
         self.assertEqual(q.correct, None)
 
+
 if __name__ == '__main__':
     unittest.main()
