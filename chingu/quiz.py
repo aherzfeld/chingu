@@ -55,36 +55,36 @@ class VerbQuiz(Quiz, Verb):
 
     def __init__(self, subject_dict, quiz_type='present', quiz_length=10):
         super().__init__(subject_dict, quiz_type, quiz_length)
-        
+
         types = {'definition': self.subject_dict.get,
                  'present': self.conjugate_present,
                  'future': 'not yet implemented'}
-        
+
         self.type_method = types[self.quiz_type]
 
     # modify to accept option_method as arg
     @property
     def quiz_data(self):
-        """ Returns - [(question_key, answer, definition, question_str), ...]] 
-        
+        """ Returns - [(question_key, answer, definition, question_str), ...]]
+
         Utilizes: subject_dict - subject specific dictionary {word: definition}
                   conjugate_present(verb) - method from Verb class
                   _question_keys - list of keys for subject_dict from Quiz
                   option_method - method corresponding to quiz_option """
-        
+
         return [(q, self.type_method(q), self.subject_dict[q],
                 self._question(q)) for q in self._question_keys]
 
     # modify to accept option_method as arg
     def _question(self, question_key):
         """ Receives question_key, returns formatted question str """
-        
+
         if self.quiz_type == 'definition':
             return '\nWhat is the definition of {}?'.format(question_key)
         else:
             return '\nWhat is the {} tense form of {}?'.format(
                 self.quiz_type, question_key)
-    
+
 
 class QuizSetup():
     """ Gathers user input to instantiate quiz """
@@ -133,8 +133,9 @@ class QuizInterface():
     """ Handles User-facing quiz IO and scoretracking """
 
     def __init__(self, quiz_data, quiz_specs=None):
-        """ Param: quiz_data - created by [Subject]Quiz object 
-        (question_key, answer, definition, question_str) 
+        """ Param: quiz_data - created by [Subject]Quiz object
+        (question_key, answer, definition, question_str)
+
         Param: quiz_type: Quiz.quiz_string"""
 
         self.quiz_data = quiz_data
@@ -143,7 +144,6 @@ class QuizInterface():
         self.num_correct = 0
         self.num_wrong = 0
 
-    # add quiz_type functionality
     def start_quiz(self):
         """ Loop through quiz_data and return results tuple.
         return (quiz_type, num_correct, num_wrong, timestamp) """
@@ -153,11 +153,10 @@ class QuizInterface():
         return (self.quiz_specs, self.num_correct, self.num_wrong,
                 datetime.utcnow())
 
-    # maybe this should return T / F for feedback
     def ask_question(self, q):
-        """ Returns answer_result boolean, increments num_correct / num_wrong 
+        """ Returns answer_result boolean, increments num_correct / num_wrong
         based on user input
-        
+
         Param: q = (question_key, answer, definition, question_str) """
 
         answer = q[1]
@@ -166,17 +165,16 @@ class QuizInterface():
         self.update_score(answer_result)
         return (answer_result, answer)
 
-    # in progress , write test (% might need work)
     def feedback(self, answer_results):
         """ Returns feedback string to be printed by print_feedback
-        Param: answer_results tuple 
+        Param: answer_results tuple
         [0] = True if correct / False if incorrect
         [1] = correct answer """
 
         meta_data = '{:.0%} correct with {} question{} remaining.'.format(
-                self.score_percent, self.questions_remaining,
-                '' if self.questions_remaining == 1 else 's')
-        if answer_results[0] == True:
+                    self.score_percent, self.questions_remaining,
+                    '' if self.questions_remaining == 1 else 's')
+        if answer_results[0]:
             return('\nCorrect! ' + meta_data + '\n')
         else:
             return('\nHmm not quite. The correct answer is {}.\n'.format(
@@ -203,9 +201,9 @@ class QuizInterface():
         """ Receives Boolean, updates num_correct(True) / num_wrong(False) """
         if not isinstance(boolean, bool):
             return False
-        if boolean == True:
+        if boolean:
             self.num_correct += 1
-        elif boolean == False:
+        elif not boolean:
             self.num_wrong += 1
         return True
 
@@ -231,13 +229,13 @@ class QuizInterface():
 
     def print_results(self, results):
         print('You completed a {} on {}.\n\n\
-You got {} question{} correct and {} question{} wrong.\n'.format(
-    self.quiz_string, results[3].strftime('%x'),
-    results[1], '' if results[1] == 1 else 's',
-    results[2], '' if results[2] == 1 else 's'))
+            You got {} question{} correct and {} question{} wrong.\n'.format(
+            self.quiz_string, results[3].strftime('%x'),
+            results[1], '' if results[1] == 1 else 's',
+            results[2], '' if results[2] == 1 else 's'))
         return True
 
-     
+
 
 
 
