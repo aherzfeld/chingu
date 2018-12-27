@@ -4,9 +4,6 @@ from sqlalchemy import create_engine
 from sqlalchemy import (Table, Column, Integer, String, MetaData, ForeignKey,
                         DateTime, Boolean)
 
-# Global variables
-SQLITE = 'sqlite'
-
 # Table names
 USER = 'user'
 QUIZ = 'quiz'
@@ -16,7 +13,7 @@ QUESTION = 'question'
 class Database():
     # http://docs.sqlalchemy.org/en/latest/core/engines.html
     DB_ENGINE = {
-        SQLITE: 'sqlite:///{DB}'
+        'sqlite': 'sqlite:///{DB}'
     }
 
     # Main DB connection reference object
@@ -36,18 +33,19 @@ class Database():
 
         # when switching to ORM add Column('quizzes', ),
         # maybe just query for num_correct / wrong
-        user = Table(USER, metadata,
+        user = Table('user', metadata,
                      Column('id', Integer, primary_key=True),
+                     Column('username', String, nullable=False),
                      Column('num_correct', Integer),
                      Column('num_wrong', Integer))
         # when switching to ORM add Column('questions', ),
-        quiz = Table(QUIZ, metadata,
+        quiz = Table('quiz', metadata,
                      Column('id', Integer, primary_key=True),
                      Column('num_correct', Integer),
                      Column('num_wrong', Integer),
                      Column('date_taken', DateTime),
                      Column('user_id', Integer, ForeignKey('user.id')))
-        question = Table(QUESTION, metadata,
+        question = Table('question', metadata,
                          Column('id', Integer, primary_key=True),
                          Column('key', String),
                          Column('answer', String),
