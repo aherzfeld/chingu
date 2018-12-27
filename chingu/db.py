@@ -4,7 +4,6 @@ from sqlalchemy import create_engine
 from sqlalchemy import (Table, Column, Integer, String, MetaData, ForeignKey,
                         DateTime, Boolean)
 
-
 # Global variables
 SQLITE = 'sqlite'
 
@@ -55,19 +54,39 @@ class Database():
                          Column('definition', String),
                          Column('correct', Boolean),
                          Column('quiz_id', Integer, ForeignKey('quiz.id')))
+        try:
+            metadata.create_all(self.db_engine)
+            print('Tables created.')
+        except Exception as e:
+            print('An error occurred during table creation.')
+            print(e)
 
+    # Insert, Update, Delete
+    def execute_query(self, query=''):
+        """ Performs provided SQL query """
+        if query == '':
+            return
+        print(query)
+        with self.db_engine.connect() as connection:
+            try:
+                connection.execute(query)
+            except Exception as e:
+                print(e)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    def print_all_data(self, table='', query=''):
+        """ Prints all data from given table or executes optional query """
+        if query != '':
+            query = query
+        else:
+            query = "SELECT * FROM '{}';".format(table)
+        print(query)
+        with self.db_engine.connect() as connection:
+            try:
+                result = connection.execute(query)
+            except Exception as e:
+                print(e)
+            else:
+                for row in result:
+                    print(row)
+                result.close()
+        print('\n')
