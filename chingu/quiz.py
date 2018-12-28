@@ -1,7 +1,7 @@
 # Quiz parent class & subject-specific quiz sub-classes
 import random
 from datetime import datetime
-from abc import ABCMeta
+from abc import ABCMeta, abstractmethod
 from chingu.verb import Verb
 from chingu.verblist import verb_dict
 
@@ -173,14 +173,14 @@ class QuizSetup():
     types = {'verb': ('definition', 'present', 'future'),
              'noun': ('demo1', 'demo2')}  # not yet implemented
 
-    def __init__(self):
+    def __init__(self, category=None, quiz_type=None, length=10):
         """ Prompts user for input upon initialization """
 
-        self.category = None
+        self.category = category
         self.get_category()
-        self.type = None
+        self.type = quiz_type
         self.get_type()
-        self.length = None
+        self.length = int(length)
         self.get_length()
         self.quizclass = self.categories[self.category]
 
