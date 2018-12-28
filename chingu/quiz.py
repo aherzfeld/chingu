@@ -173,7 +173,7 @@ class QuizSetup():
     types = {'verb': ('definition', 'present', 'future'),
              'noun': ('demo1', 'demo2')}  # not yet implemented
 
-    def __init__(self, category=None, quiz_type=None, length=0):
+    def __init__(self, category=None, quiz_type=None, length=10):
         """ Prompts user for input upon initialization """
 
         self.category = category

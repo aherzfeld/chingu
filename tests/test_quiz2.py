@@ -1,6 +1,6 @@
 # unittest of the quiz module
 import unittest
-from unittest.mock import mock
+from unittest.mock import patch
 import chingu.quiz as quiz
 
 
@@ -27,23 +27,23 @@ class TestQuizSetupFromArgs(unittest.TestCase):
 
 class TestQuizSetupFromUserInput(unittest.TestCase):
 
-    @mock.patch('builtins.input', side_effect=['bad_input', 'verb'])
-    def test_get_quiz_category_from_user_input(self):
-        setup = quiz.SetupQuiz(quiz_type='present')
-        self.assertIsInstance(setup, quiz.SetupQuiz)
+    @patch('builtins.input', return_value='verb')
+    def test_get_quiz_category_from_user_input(self, input):
+        setup = quiz.QuizSetup(quiz_type='present')
+        self.assertIsInstance(setup, quiz.QuizSetup)
         self.assertEqual(setup.category, 'verb')
 
-    @mock.patch('builtins.input', side_effect=['bad_input', 'definition'])
-    def test_get_quiz_type_from_user_input(self):
-        setup = quiz.SetupQuiz(category='verb')
-        self.assertIsInstance(setup, quiz.SetupQuiz)
+    @patch('builtins.input', return_value='definition')
+    def test_get_quiz_type_from_user_input(self, input):
+        setup = quiz.QuizSetup(category='verb')
+        self.assertIsInstance(setup, quiz.QuizSetup)
         self.assertEqual(setup.type, 'definition')
 
-    @mock.patch('builtins.input', side_effect=[100, 10])
-    def test_get_quiz_length_from_user_input(self):
-        setup = quiz.SetupQuiz(category='verb', quiz_type='present')
-        self.assertIsInstance(setup, quiz.SetupQuiz)
-        self.assertEqual(setup.length, 10)
+    @patch('builtins.input', return_value=15)
+    def test_get_quiz_length_from_user_input(self, input):
+        setup = quiz.QuizSetup(category='verb', quiz_type='present', length=0)
+        self.assertIsInstance(setup, quiz.QuizSetup)
+        self.assertEqual(setup.length, 15)
 
 
 class TestQuestion(unittest.TestCase):
@@ -113,10 +113,24 @@ class TestVerbQuiz(unittest.TestCase):
 class TestQuizInterface(unittest.TestCase):
 
     def setUp(self):
-        pass
+        setup = quiz.QuizSetup(category='verb', quiz_type='definition')
+        self.quiz_io = setup.create_quiz()
 
     def tearDown(self):
-        pass
+        del self.quiz_io
+
+    @patch('builtins.input', return_value='wrong_answer')
+    def test_ask_question(self, input):
+        question = self.quiz_io.ask_question(self.quiz_io.quiz.question_list[0])
+        self.assertFalse(question.correct)
+
+    def test_start_quiz(self):
+        # using with patch() context manager
+        answers = [q.answer for q in self.quiz_io.quiz.question_list]
+        with patch('builtins.input', side_effect=answers):
+            done_quiz = self.quiz_io.start_quiz()
+        for question in done_quiz.question_list:
+            self.assertTrue(question.correct)
 
 
 
