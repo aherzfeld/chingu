@@ -6,3 +6,4 @@ chingu.egg-info
 .coverage
 htmlcov
 *.pyc
+*.sqlite
