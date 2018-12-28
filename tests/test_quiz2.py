@@ -1,24 +1,49 @@
 # unittest of the quiz module
 import unittest
-from unittest.mock import patch
-import random
-import datetime
+from unittest.mock import mock
 import chingu.quiz as quiz
 
 
-class TestQuizSetup(unittest.TestCase):
+class TestQuizSetupFromArgs(unittest.TestCase):
 
     def setUp(self):
-        pass
+        self.setup = quiz.QuizSetup(category='verb', quiz_type='definition')
 
     def tearDown(self):
-        pass
+        del self.setup
 
     def test_setup_quiz_based_on_init_specifications(self):
-        pass
+        newquiz = self.setup.setup_quiz()
+        self.assertIsInstance(newquiz, quiz.VerbQuiz)
+        self.assertEqual(newquiz.category, 'verb')
+        self.assertEqual(newquiz.type, 'definition')
+        self.assertEqual(newquiz.length, 10)
 
     def test_create_quiz_by_returning_instantiated_quiz_interface(self):
-        pass
+        quiz_io = self.setup.create_quiz()
+        self.assertIsInstance(quiz_io, quiz.QuizInterface)
+        self.assertIsInstance(quiz_io.quiz, quiz.VerbQuiz)
+
+
+class TestQuizSetupFromUserInput(unittest.TestCase):
+
+    @mock.patch('builtins.input', side_effect=['bad_input', 'verb'])
+    def test_get_quiz_category_from_user_input(self):
+        setup = quiz.SetupQuiz(quiz_type='present')
+        self.assertIsInstance(setup, quiz.SetupQuiz)
+        self.assertEqual(setup.category, 'verb')
+
+    @mock.patch('builtins.input', side_effect=['bad_input', 'definition'])
+    def test_get_quiz_type_from_user_input(self):
+        setup = quiz.SetupQuiz(category='verb')
+        self.assertIsInstance(setup, quiz.SetupQuiz)
+        self.assertEqual(setup.type, 'definition')
+
+    @mock.patch('builtins.input', side_effect=[100, 10])
+    def test_get_quiz_length_from_user_input(self):
+        setup = quiz.SetupQuiz(category='verb', quiz_type='present')
+        self.assertIsInstance(setup, quiz.SetupQuiz)
+        self.assertEqual(setup.length, 10)
 
 
 class TestQuestion(unittest.TestCase):
