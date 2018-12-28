@@ -19,6 +19,7 @@ quiz_io.print_results()
 print('We hope you come back soon!\n')
 
 
+
 # TODO: create SQL statements to:
 
 
