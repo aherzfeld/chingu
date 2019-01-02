@@ -121,8 +121,8 @@ class TestQuizInterface(unittest.TestCase):
 
     @patch('builtins.input', return_value='wrong_answer')
     def test_ask_question(self, input):
-        question = self.quiz_io.ask_question(self.quiz_io.quiz.question_list[0])
-        self.assertFalse(question.correct)
+        q = self.quiz_io.ask_question(self.quiz_io.quiz.question_list[0])
+        self.assertFalse(q.correct)
 
     def test_start_quiz(self):
         # using with patch() context manager

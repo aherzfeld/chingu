@@ -5,10 +5,19 @@ class User():
     """ Create user object for persistant data tracking """
 
     # TODO: add restrictions for username
+    # TODO: upon init, query db for user, if none, create_user(Database method)
     def __init__(self, username):
         self.username = username
         self.date_created = None
-        # these might be properties that query DB
-        self.quizzes_taken = None
-        self.num_correct = None
-        self.num_wrong = None
+
+    @property
+    def quizzes_taken(self):
+        pass
+
+    @property
+    def num_correct(self):
+        pass
+
+    @property
+    def num_wrong(self):
+        pass
