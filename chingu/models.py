@@ -23,7 +23,7 @@ class Question(Base):
     def __repr__(self):
         return (f"<Question(key='{self.key}', answer='{self.answer}', "
                 f"definition='{self.definition}', question='{self.question}', "
-                f"quiz_id={self.quiz_id})>")
+                f"correct={self.correct}, quiz_id={self.quiz_id})>")
 
 
 class Quiz(Base):
@@ -42,15 +42,15 @@ class Quiz(Base):
 
     def __repr__(self):
         return (f"<Quiz(category='{self.category}', "
-                f"quiz_type='{self.quiz_type}', "
-                f"quiz_id={self.quiz_id}>)")
+                f"quiz_type='{self.quiz_type}', quiz_id={self.quiz_id}, "
+                f"taken_on={self.taken_on}>)")
 
 
 class User(Base):
     __tablename__ = 'users'
 
     user_id = Column('id', Integer, primary_key=True)
-    username = Column(String, nullable=False)
+    username = Column(String, unique=True, nullable=False)
     # String because sqlite has no DateTime type isoformat='YYYY-MM-DD'
     created_on = Column(String,
                         default=datetime.utcnow().isoformat(' ', 'seconds'))
@@ -58,6 +58,14 @@ class User(Base):
 
     quizzes = relationship('Quiz', order_by=Quiz.quiz_id,
                            back_populates='user')
+
+    @property
+    def num_correct(self):
+        pass
+
+    @property
+    def num_wrong(self):
+        pass
 
     def __repr__(self):
         return (f"<User(user_id={self.user_id}, username='{self.username}',"
