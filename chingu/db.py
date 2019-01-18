@@ -39,11 +39,8 @@ class Database():
             print('An error occurred during table destruction.')
             print(e)
 
-    def print_all_data(self):
-        pass
 
-
-class DB_Interface():
+class DBInterface():
     """ Commit post-quiz data into database  """
 
     def __init__(self, db, user, quiz=None):
@@ -94,8 +91,24 @@ class DB_Interface():
                 for q in self.quiz.question_list]
 
 
+# TODO: create DB_Helper class (queries and such)
+class DBHelper():
+    """ Just a query buddy """
 
+    def __init__(self, db):
+        self.session = self.create_session(db.db_engine)
 
+    @staticmethod
+    def create_session(db_engine):
+        """ Return an instantiated session object """
+        Session = sessionmaker(bind=db_engine)
+        return Session()
+
+    def print_all_data(self, model):
+        """ Prints all data from given table model class """
+        print(f'\n### {model.__name__} table:\n')
+        for row in self.session.query(model).all():
+            print(row)
 
 
 
