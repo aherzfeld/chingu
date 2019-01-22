@@ -1,9 +1,14 @@
-__pycache__
+*.pyc
+__pycache__/
+
 cheatsheet.txt
+
 .env
 venv
-chingu.egg-info
+
+*.egg-info
+
 .coverage
 htmlcov
-*.pyc
+
 *.sqlite

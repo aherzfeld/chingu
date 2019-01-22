@@ -1,0 +1,89 @@
+/* Colors:
+Pink: #fc018b
+Blue: #02fcf8 */
+
+body, html {
+    /*padding-top: 70px;*/
+    height:100%;
+    font-family: "Nunito", sans-serif;
+}
+
+.bg {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5),
+                                      rgba(0, 0, 0, 0.5)),
+                      url("neonstairs.jpg");
+    background-color: #352547;
+    height: 100%;
+
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.bg2 {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5),
+                                      rgba(0, 0, 0, 0.5)),
+                      url("storefront.jpg");
+    background-color: #352547;
+    height: 100%;
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#mainNavbar {
+    font-size: 1.5rem;
+    font-weight: 100;
+}
+
+#mainNavbar .nav-link {
+    color: white;
+}
+
+#mainNavbar .nav-link:hover {
+    color: #02fcf8;
+}
+
+#mainNavbar .navbar-brand {
+    font-size: 1.5rem;
+    color: #02fcf8;
+}
+
+#mainNavbar .navbar-brand:hover {
+    color: #fc018b;
+}
+
+#headingGroup h1 {
+    font-weight: 100;
+    font-size: 4rem;
+}
+
+#headingGroup h1 span {
+    color: #fc018b;
+}
+
+#headingGroup .btn {
+    color: #02fcf8;
+}
+
+#headingGroup .btn:hover {
+    color: white;
+}
+
+#loginForm {
+    color: white;
+}
+
+#loginForm #emailHelp {
+    color: white;
+}
+
+
+
+
+
+
+
+

@@ -7,20 +7,23 @@ from chingu.verblist import verb_dict
 
 
 class Question():
-    """ Question object that will be a part of a Quiz's quiz_data
-
-    Param: key_list - (quiz_length) random keys from dictionary
+    """ Question object that will be a part of a Quiz's question_list
 
     Attributes:
-        key - word/item to be tested from dictionary
-        answer - correct answer generated via Quiz.type_method
-        definition - word definition
         question - question string for presentation to user
         correct - boolean, True if user answered correctly
     """
 
-    # these param will have to be prepared by Quiz
     def __init__(self, key, answer, definition, quiz_type):
+        """ Initiate using params prepared by Quiz object
+
+        Params:
+            key - word/item to be tested from subject dictionary
+            answer - correct answer generated via Quiz.type_method
+            definition - word definition from subject dict
+            quiz_type - quiz sub-type (e.g. 'present' tense verb)
+
+        """
         self.key = key
         self.answer = answer
         self.definition = definition
