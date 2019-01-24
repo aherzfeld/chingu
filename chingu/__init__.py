@@ -5,7 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 
 # Allez les extensiones!
-login_manager = LoginManager()
+login = LoginManager()
 db = SQLAlchemy()
 
 
@@ -44,7 +44,7 @@ def create_app(test_config=None):
 
     # Allez les extensiones!
     db.init_app(app)
-    login_manager.init_app(app)
+    login.init_app(app)
 
     from app.auth import bp as auth_bp
     """ the url_prefix is optional - any routes defined in this bp will get
