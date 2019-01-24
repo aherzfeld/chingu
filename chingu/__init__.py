@@ -51,7 +51,7 @@ def create_app(test_config=None):
     login.init_app(app)
     mail.init_app(app)
 
-    from app.auth import bp as auth_bp
+    from chingu.auth import bp as auth_bp
     """ the url_prefix is optional - any routes defined in this bp will get
     this prefix in their URLs. Useful for namespacing
     """
