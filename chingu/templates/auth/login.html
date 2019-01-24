@@ -22,18 +22,13 @@
           <input type="checkbox" class="form-check-input" id="exampleCheck1">
           <label class="form-check-label" for="exampleCheck1">Remember Me</label>
         </div>
+        <p>New User?<a href="{{ url_for('auth.register') }}"> Sign Up!</a></p>
+        <p>Forgot Your Password?<a href="{{ url_for('auth.reset_password_request') }}"> Click to Reset</a></p>
         <button type="submit" class="btn btn-outline-info">Go</button> 
       </div>
     </div>  
   </form>
   
-  <p>
-    {{ _('New User?') }} <a href="{{ url_for('auth.register') }}">{{ 'Click to Sign Up!' }}</a>
-  </p>
-  <p>
-      {{ _('Forgot Your Password?') }}
-      <a href="{{ url_for('auth.reset_password_request') }}">{{ _('Click to Reset It') }}</a>
-  </p>
 </div>
 {% endblock %}
 
