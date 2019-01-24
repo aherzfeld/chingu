@@ -1,12 +1,16 @@
 import os
 from flask import Flask
 from flask_login import LoginManager
+from flask_mail import Mail
 from flask_sqlalchemy import SQLAlchemy
 
 
 # Allez les extensiones!
 login = LoginManager()
+# this tells flask-login which view function handles logins
+login.login_view = 'auth.login'
 db = SQLAlchemy()
+mail = Mail()
 
 
 # app factory
@@ -45,6 +49,7 @@ def create_app(test_config=None):
     # Allez les extensiones!
     db.init_app(app)
     login.init_app(app)
+    mail.init_app(app)
 
     from app.auth import bp as auth_bp
     """ the url_prefix is optional - any routes defined in this bp will get
