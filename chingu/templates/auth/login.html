@@ -26,7 +26,14 @@
       </div>
     </div>  
   </form>
-
+  
+  <p>
+    {{ _('New User?') }} <a href="{{ url_for('auth.register') }}">{{ 'Click to Sign Up!' }}</a>
+  </p>
+  <p>
+      {{ _('Forgot Your Password?') }}
+      <a href="{{ url_for('auth.reset_password_request') }}">{{ _('Click to Reset It') }}</a>
+  </p>
 </div>
 {% endblock %}
 
