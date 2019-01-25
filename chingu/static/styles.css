@@ -8,6 +8,14 @@ body, html {
     font-family: "Nunito", sans-serif;
 }
 
+.bgBase {
+    background-color: #352547;
+    height: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
 .bg {
     background-image: linear-gradient(rgba(0, 0, 0, 0.5),
                                       rgba(0, 0, 0, 0.5)),
@@ -34,8 +42,8 @@ body, html {
 }
 
 .bg3 {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.5),
-                                      rgba(0, 0, 0, 0.5)),
+    background-image: linear-gradient(rgba(0, 0, 0, 0.6),
+                                      rgba(0, 0, 0, 0.6)),
                       url("street.jpg");
     background-color: #352547;
     height: 100%;
