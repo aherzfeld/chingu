@@ -6,27 +6,53 @@
 
 <div class="bg3">  
 
-  <form id="registerForm" class="container h-100">
+  
+  <div class="container h-100">
     <div class="row justify-content-center align-items-center h-100">
-      <div class="col col-sm-8 col-md-6 col-lg-6 col-xl-5">
+      <div class="col col-sm-8 col-md-6 col-lg-6 col-xl-5 text-white">
+        
         <h1 class="display-4">Create Account</h1>
-        <div class="form-group">
-          <label for="inputEmail">Email address</label>
-          <input type="email" class="form-control" id="inputEmail" aria-describedby="emailHelp" placeholder="Enter email">
-          <small id="emailHelp" class="form-text">We'll never share your email with anyone else.</small>
-        </div>
-        <div class="form-group">
-          <label for="inputPassword1">Password</label>
-          <input type="password" class="form-control" id="inputPassword1" placeholder="Password">
-        </div>
-        <div class="form-group">
-          <label for="inputPassword2">Repeat Password</label>
-          <input type="password" class="form-control" id="inputPassword2" placeholder="Repeat password">
-        </div>
-        <button type="submit" class="btn btn-outline-info">Sign Up</button> 
+
+        <form id="registerForm" class="" action="" method="post">
+          {{ form.hidden_tag() }}
+          <div class="form-group">
+            {{ form.username.label }}
+            {{ form.username(class="form-control") }}  
+          </div>
+          {% for error in form.username.errors %}
+          <span style="color: red;">[{{ error }}]</span>
+          {% endfor %}
+          <div class="form-group">
+            {{ form.email.label }}
+            {{ form.email(class="form-control") }}
+            <small id="emailHelp" class="form-text">We'll never share your email with anyone else.</small>
+          </div>
+          {% for error in form.email.errors %}
+          <span style="color: red;">[{{ error }}]</span>
+          {% endfor %}
+          <div class="form-group">
+            {{ form.password.label }}
+            {{ form.password(class="form-control", placeholder="NotYourPet$name") }}
+          </div>
+          {% for error in form.password.errors %}
+          <span style="color: red;">[{{ error }}]</span>
+          {% endfor %}
+          <div class="form-group">
+            {{ form.password2.label }}
+            {{ form.password2(class="form-control") }}
+          </div>
+          {% for error in form.password2.errors %}
+          <span style="color: red;">[{{ error }}]</span>
+          {% endfor %}
+          <p>{{ form.submit(class="btn btn-outline-info") }}</p>
+          <!-- <button type="submit" class="btn btn-outline-info">Sign Up</button>  -->
+        </form>
+
       </div>
-    </div>  
-  </form>
+    </div> 
+  </div>  
+     
+  
 
 </div>
 {% endblock %}

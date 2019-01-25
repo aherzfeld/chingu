@@ -28,7 +28,7 @@ def create_app(test_config=None):
         # DATABASE=os.path.join(app.instance_path, 'chingu.sqlite'),
         # if no env var is set a sqlite db will be cretaed in /instance
         SQLALCHEMY_DATABASE_URI=os.environ.get('DATABASE_URL') or \
-        os.path.join(app.instance_path, 'chingu.sqlite'),
+        'sqlite:///' + os.path.join(app.instance_path, 'chingu.sqlite'),
         SQLALCHEMY_TRACK_MODIFICATIONS=False,
     )
 
@@ -62,4 +62,5 @@ def create_app(test_config=None):
 
     return app
 
-
+# imported below app instantiation to avoid circular imports
+from chingu import models
