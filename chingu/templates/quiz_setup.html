@@ -32,7 +32,8 @@
         {% endfor %}
         <div class="form-group">
           {{ form.length.label }}
-          {{ form.length(class="form-control") }}
+          {{ form.length(class="form-control",
+                         placeholder="Number of Questions (1-20)") }}
         </div>
         {% for error in form.length.errors %}
         <span style="color: red;">[{{ error }}]</span>
