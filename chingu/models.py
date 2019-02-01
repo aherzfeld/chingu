@@ -7,6 +7,11 @@ from flask_login import UserMixin
 from chingu import db, login
 
 
+# TODO: combine Question class and model into one model here
+# TODO: combine Quiz class and model into one model here
+# TODO: Analyse viability, then remove need for old_db.py
+
+
 class Question(db.Model):
     __tablename__ = 'questions'
 
