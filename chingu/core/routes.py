@@ -13,3 +13,6 @@ from chingu.core import bp
 def index():
     return render_template('index.html')
 
+@bp.route('quiz_setup', methods=['GET', 'POST'])
+def quiz_setup():
+    return render_template('quiz_setup.html')

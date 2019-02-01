@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Quiz Setup{% endblock %}
+
+{% block content %}
+
+<div class="bgBase">
+
+  
+  <div class="container h-100">  
+    <div class="row justify-content-center align-items-center h-100">
+      <div class="col col-sm-8 col-md-6 col-lg-6 col-xl-5 text-white">
+        
+        <h1 class="display-4">Quiz Setup</h1>
+
+        <form action="" method="post">
+        {{ form.hidden_tag() }}
+
+        <div class="form-group">
+          {{ form.category.label }}
+          {{ form.category(class="form-control") }}
+        </div>
+        {% for error in form.category.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+        <div class="form-group">
+          {{ form.quiz_type.label }}
+          {{ form.quiz_type(class="form-control") }}
+        </div>
+        {% for error in form.quiz_type.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+        <div class="form-group">
+          {{ form.length.label }}
+          {{ form.length(class="form-control") }}
+        </div>
+        {% for error in form.length.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+        <p>{{ form.submit(class="btn btn-outline-info") }}</p>
+        </form>
+
+      </div>
+    </div>  
+  </div>
+  
+  
+</div>
+
+{% endblock %}
