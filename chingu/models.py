@@ -10,9 +10,13 @@ from chingu import db, login
 # TODO: combine Question class and model into one model here
 # TODO: combine Quiz class and model into one model here
 # TODO: Analyse viability, then remove need for old_db.py
+# TODO: create named tuple for quiz categories / quiz_types
+# to be used by Quiz_Setup, QuizSetupForm validation etc
 
 
 class Question(db.Model):
+    """ Question object that will be a part of a Quiz's question_list """
+
     __tablename__ = 'questions'
 
     question_id = db.Column('id', db.Integer, primary_key=True)
@@ -24,6 +28,40 @@ class Question(db.Model):
     quiz_id = db.Column(db.Integer, db.ForeignKey('quizzes.id'))
 
     quiz = db.relationship('Quiz', back_populates='questions')
+
+    def __init__(self, key, answer, definition, quiz_type):
+        """ Initiate using params prepared by Quiz object
+
+        Params:
+            key - word/item to be tested from subject dictionary
+            answer - correct answer generated via Quiz.type_method
+            definition - word definition from subject dict
+            quiz_type - quiz sub-type (e.g. 'present' tense verb)
+
+        """
+        self.key = key
+        self.answer = answer
+        self.definition = definition
+        self.question = self.question_string(key, quiz_type)
+        self.correct = None
+
+    @staticmethod
+    def question_string(key, quiz_type):
+        """ Receives key & quiz_type, returns formatted question str """
+
+        if quiz_type == 'definition':
+            return '\nWhat is the definition of {}?'.format(key)
+        else:
+            return '\nWhat is the {} tense form of {}?'.format(
+                quiz_type, key)
+
+    def check(self, user_answer):
+        """ Return True if user input answer is correct """
+
+        # the length check allows for incomplete, but close enough definitions
+        self.correct = user_answer in self.answer and (
+            len(user_answer) >= (len(self.answer) / 3))
+        return self.correct
 
     def __repr__(self):
         return (f"<Question(key='{self.key}', answer='{self.answer}', "
