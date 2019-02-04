@@ -29,8 +29,7 @@ def quiz_setup():
         # TODO: Pass Quiz ID to /quiz via URL???
         # TODO: Serialize question_list to JSON and store in Session
         # Begin the quiz with question at index 0 of quiz.question_list
-        return redirect(url_for('core.quiz', question=0,
-            quiz_manager=quiz_manager))
+        return redirect(url_for('core.quiz', question=0))
     return render_template('quiz_setup.html', form=form)
 
 
@@ -41,6 +40,7 @@ def quiz(question):
     # TODO: pull next question from session and deserialize
     # TODO: commit question to DB after user answers (by Quiz ID in url)
     # TODO: generate feedback via QuizManager
+    # TODO: perhaps store quiz state in Session ??
     return render_template('quiz.html', form=form)
 
 

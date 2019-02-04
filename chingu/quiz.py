@@ -142,6 +142,7 @@ class VerbQuiz(Quiz, Verb):
         super().__init__(quiz_type, quiz_length)
 
 
+# TODO: might change to create quiz via static method (without need to instantiate)
 class QuizSetup():
     """ Gathers user input to instantiate quiz """
 
@@ -165,26 +166,20 @@ class QuizSetup():
 
         return self.quizclass(self.type, self.length)
 
-    def create_quiz(self):
-        """ Returns Instantiated QuizInterface object """
-        quiz = self.setup_quiz()
-
-        return QuizManager(quiz)
-
 
 class QuizManager():
-    """ Administer Quiz IO via Flask """
+    """ Statelessly Administer Quiz IO via Flask """
 
     @staticmethod
     def check(answer, user_answer):
         """ Return True if user input answer is correct """
 
-        # the length check allows for incomplete, but close enough definitions
+        # the length check allows for incomplete, but close-enough definitions
         return user_answer in answer and (
             len(user_answer) >= (len(answer) / 3))
 
 
-# TODO: pass Quiz and User Instances as args
+# TODO: will become obsolete once QuizManger is complete
 class QuizInterface():
     """ Handles User-facing quiz IO and scoretracking
 
