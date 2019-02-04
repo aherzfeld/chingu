@@ -10,8 +10,9 @@ from chingu import db, login
 # TODO: combine Question class and model into one model here
 # TODO: combine Quiz class and model into one model here
 # TODO: Analyse viability, then remove need for old_db.py
-# TODO: create named tuple for quiz categories / quiz_types
+# TODO: create mini-classes for quiz categories / quiz_types
 # to be used by Quiz_Setup, QuizSetupForm validation etc
+# TODO: consider namedtuple for quiz results output etc
 
 
 class Question(db.Model):
@@ -42,9 +43,11 @@ class Question(db.Model):
         self.key = key
         self.answer = answer
         self.definition = definition
+        # TODO: modify to accept ready question string from Quiz(factory)
         self.question = self.question_string(key, quiz_type)
         self.correct = None
 
+    # TODO: move this method into Quiz(factory)
     @staticmethod
     def question_string(key, quiz_type):
         """ Receives key & quiz_type, returns formatted question str """

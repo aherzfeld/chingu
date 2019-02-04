@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import SelectField, SubmitField, IntegerField
+from wtforms import SelectField, StringField, SubmitField, IntegerField
 from wtforms.validators import AnyOf, DataRequired, NumberRange
 
 
@@ -11,3 +11,8 @@ class QuizSetupForm(FlaskForm):
     length = IntegerField('Length', validators=[DataRequired(),
                                                 NumberRange(min=1, max=20)])
     submit = SubmitField('Start Quiz')
+
+
+class QuestionForm(FlaskForm):
+    answer = StringField('Answer', validators=[DataRequired()])
+    submit = SubmitField('Submit Answer')

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}{% endblock %}
+
+{% block content %}
+
+<!-- display: correct / wrong -->
+
+<!-- display metadata -->
+
+<!-- "next" link - create URL for next question -->
+<a href="{{ url_for('core.quiz', question=(question + 1)) }}">
+  Next Question
+</a>
+
+{% endblock %}
