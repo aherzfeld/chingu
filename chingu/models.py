@@ -30,33 +30,21 @@ class Question(db.Model):
 
     quiz = db.relationship('Quiz', back_populates='questions')
 
-    def __init__(self, key, answer, definition, quiz_type):
+    def __init__(self, key, answer, definition, question):
         """ Initiate using params prepared by Quiz object
 
         Params:
             key - word/item to be tested from subject dictionary
             answer - correct answer generated via Quiz.type_method
             definition - word definition from subject dict
-            quiz_type - quiz sub-type (e.g. 'present' tense verb)
+            question - question_string created by quiz.Quiz
 
         """
         self.key = key
         self.answer = answer
         self.definition = definition
-        # TODO: modify to accept ready question string from Quiz(factory)
-        self.question = self.question_string(key, quiz_type)
+        self.question = question
         self.correct = None
-
-    # TODO: move this method into Quiz(factory)
-    @staticmethod
-    def question_string(key, quiz_type):
-        """ Receives key & quiz_type, returns formatted question str """
-
-        if quiz_type == 'definition':
-            return '\nWhat is the definition of {}?'.format(key)
-        else:
-            return '\nWhat is the {} tense form of {}?'.format(
-                quiz_type, key)
 
     def check(self, user_answer):
         """ Return True if user input answer is correct """

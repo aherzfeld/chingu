@@ -6,6 +6,7 @@ from chingu.verb import Verb
 from chingu.verblist import verb_dict
 
 
+# TODO: remove Question from this module , but import Question from models
 class Question():
     """ Question object that will be a part of a Quiz's question_list
 
@@ -30,16 +31,7 @@ class Question():
         self.question = self.question_string(key, quiz_type)
         self.correct = None
 
-    @staticmethod
-    def question_string(key, quiz_type):
-        """ Receives key & quiz_type, returns formatted question str """
-
-        if quiz_type == 'definition':
-            return '\nWhat is the definition of {}?'.format(key)
-        else:
-            return '\nWhat is the {} tense form of {}?'.format(
-                quiz_type, key)
-
+    # TODO: REMOVE this
     def check(self, user_answer):
         """ Return True if user input answer is correct """
 
@@ -107,13 +99,24 @@ class Quiz(object):
         return random.sample(key_list, self.length)
 
     # TODO: add question string creation here
+    @staticmethod
+    def question_string(key, quiz_type):
+        """ Receives key & quiz_type, returns formatted question str """
+
+        if quiz_type == 'definition':
+            return '\nWhat is the definition of {}?'.format(key)
+        else:
+            return '\nWhat is the {} tense form of {}?'.format(
+                quiz_type, key)
+
     @property
     def make_question_list(self):
         """ Returns list of Question objects - one for each key in key_list """
 
-        return [Question(k, self.type_method(k), self.dictionary[k], self.type)
-                for k in self.key_list]
+        return [Question(k, self.type_method(k), self.dictionary[k],
+                self.question_string(k, self.type)) for k in self.key_list]
 
+    
     ###### THESE WILL ALL BE MOVED TO QUIZ MANAGER ########
 
 
