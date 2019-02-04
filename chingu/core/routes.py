@@ -22,7 +22,7 @@ def quiz_setup():
         # Instantiate quiz object
         quiz_setup = QuizSetup(category=form.category.data,
             quiz_type=form.quiz_type.data, length=form.length.data)
-        quiz_manager = quiz_setup.create_quiz()
+        quiz = quiz_setup.setup_quiz()
         # TODO: Intatiate Quiz Model
         # TODO: Commit Quiz Model into DB (question_list will be empty)
         # user = current_user OR guest (where do I create guest??)
@@ -38,6 +38,9 @@ def quiz_setup():
 def quiz(question):
     form = QuestionForm()
     # TODO: pull next question from session and deserialize
+    # TODO: render question
+    # TODO: add user answer to Question.answer
+    # TODO: check user_answer & update Question.correct
     # TODO: commit question to DB after user answers (by Quiz ID in url)
     # TODO: generate feedback via QuizManager
     # TODO: perhaps store quiz state in Session ??

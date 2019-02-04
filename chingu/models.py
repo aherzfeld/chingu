@@ -75,6 +75,11 @@ class Quiz(db.Model):
                                 back_populates='quiz')
     user = db.relationship('User', back_populates='quizzes')
 
+    def __init__(self, category, quiz_type, user_id):
+        self.category = category
+        self.quiz_type = quiz_type
+        self.user_id = user_id
+
     def __repr__(self):
         return (f"<Quiz(category='{self.category}', "
                 f"quiz_type='{self.quiz_type}', quiz_id={self.quiz_id}, "
