@@ -82,9 +82,7 @@ class Quiz(object):
         return [Question(k, self.type_method(k), self.dictionary[k],
                 self.question_string(k, self.type)) for k in self.key_list]
 
-    
     ###### THESE WILL ALL BE MOVED TO QUIZ MANAGER ########
-
 
     # TODO: this can be removed (replaced by query in QuizManager)
     @property
@@ -158,28 +156,9 @@ class QuizSetup():
         """ Prompts user for input upon initialization """
 
         self.category = category
-        # self.get_category()
         self.type = quiz_type
-        # self.get_type()
         self.length = length
-        # self.get_length()
         self.quizclass = self.categories[self.category]
-
-    """ ** No longer needed with Flask Form **
-    def get_category(self):
-        while self.category not in QuizSetup.categories:
-            self.category = input('Choose a quiz - Options: {}:  '.format(
-                                  [key for key in QuizSetup.categories]))
-
-    def get_type(self):
-        while self.type not in QuizSetup.types[self.category]:
-            self.type = input('Choose a category - Options: {}:  '.format(
-                [option for option in QuizSetup.types[self.category]]))
-
-    def get_length(self):
-        while self.length not in range(1, 20):
-            self.length = int(input('How many questions? (1 - 20):  '))
-    """
 
     def setup_quiz(self):
         """ Returns quiz object based on init specifications """
