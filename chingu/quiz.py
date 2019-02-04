@@ -32,13 +32,7 @@ class Question():
         self.correct = None
 
     # TODO: REMOVE this
-    def check(self, user_answer):
-        """ Return True if user input answer is correct """
-
-        # the length check allows for incomplete, but close enough definitions
-        self.correct = user_answer in self.answer and (
-            len(user_answer) >= (len(self.answer) / 3))
-        return self.correct
+    
 
 
 class Quiz(object):
@@ -229,6 +223,14 @@ class QuizSetup():
 
 class QuizManager():
     """ Administer Quiz IO via Flask """
+
+    @staticmethod
+    def check(answer, user_answer):
+        """ Return True if user input answer is correct """
+
+        # the length check allows for incomplete, but close enough definitions
+        return user_answer in answer and (
+            len(user_answer) >= (len(answer) / 3))
 
 
 # TODO: pass Quiz and User Instances as args

@@ -46,13 +46,16 @@ class Question(db.Model):
         self.question = question
         self.correct = None
 
-    def check(self, user_answer):
-        """ Return True if user input answer is correct """
+    
+    # Just in case I need this until confirmed working
+    # def check(self, user_answer):
+    #     """ Return True if user input answer is correct """
 
-        # the length check allows for incomplete, but close enough definitions
-        self.correct = user_answer in self.answer and (
-            len(user_answer) >= (len(self.answer) / 3))
-        return self.correct
+    #     # the length check allows for incomplete, but close enough definitions
+    #     self.correct = user_answer in self.answer and (
+    #         len(user_answer) >= (len(self.answer) / 3))
+    #     return self.correct
+    
 
     def __repr__(self):
         return (f"<Question(key='{self.key}', answer='{self.answer}', "
