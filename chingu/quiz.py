@@ -1,38 +1,10 @@
 # Quiz parent class & subject-specific quiz sub-classes
 import random
 from datetime import datetime
-from abc import ABCMeta, abstractmethod
+from abc import ABCMeta
 from chingu.verb import Verb
 from chingu.verblist import verb_dict
-
-
-# TODO: remove Question from this module , but import Question from models
-class Question():
-    """ Question object that will be a part of a Quiz's question_list
-
-    Attributes:
-        question - question string for presentation to user
-        correct - boolean, True if user answered correctly
-    """
-
-    def __init__(self, key, answer, definition, quiz_type):
-        """ Initiate using params prepared by Quiz object
-
-        Params:
-            key - word/item to be tested from subject dictionary
-            answer - correct answer generated via Quiz.type_method
-            definition - word definition from subject dict
-            quiz_type - quiz sub-type (e.g. 'present' tense verb)
-
-        """
-        self.key = key
-        self.answer = answer
-        self.definition = definition
-        self.question = self.question_string(key, quiz_type)
-        self.correct = None
-
-    # TODO: REMOVE this
-    
+from models import Question
 
 
 class Quiz(object):
