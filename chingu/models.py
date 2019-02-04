@@ -46,15 +46,6 @@ class Question(db.Model):
         self.question = question
         self.correct = None
 
-    # Just in case I need this until confirmed working
-    # def check(self, user_answer):
-    #     """ Return True if user input answer is correct """
-
-    #     # the length check allows for incomplete, but close enough definitions
-    #     self.correct = user_answer in self.answer and (
-    #         len(user_answer) >= (len(self.answer) / 3))
-    #     return self.correct
-
     def __repr__(self):
         return (f"<Question(key='{self.key}', answer='{self.answer}', "
                 f"definition='{self.definition}', question='{self.question}', "
@@ -75,10 +66,11 @@ class Quiz(db.Model):
                                 back_populates='quiz')
     user = db.relationship('User', back_populates='quizzes')
 
-    def __init__(self, category, quiz_type, user_id):
-        self.category = category
-        self.quiz_type = quiz_type
-        self.user_id = user_id
+    # Might be unnecessary
+    # def __init__(self, category, quiz_type, user):
+    #     self.category = category
+    #     self.quiz_type = quiz_type
+    #     self.user = user
 
     def __repr__(self):
         return (f"<Quiz(category='{self.category}', "

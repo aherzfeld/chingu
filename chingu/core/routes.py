@@ -1,8 +1,8 @@
 from flask import (current_app, flash, redirect, render_template,
                    request, url_for)
 from flask_login import current_user, login_required
-#  from chingu import db
-#  from chingu.models import
+from chingu import db
+from chingu.models import Quiz
 from chingu.core import bp
 from chingu.core.forms import QuizSetupForm, QuestionForm
 from chingu.quiz import QuizSetup
@@ -21,20 +21,27 @@ def quiz_setup():
     if form.validate_on_submit():
         # Instantiate quiz object
         quiz_setup = QuizSetup(category=form.category.data,
-            quiz_type=form.quiz_type.data, length=form.length.data)
+                               quiz_type=form.quiz_type.data,
+                               length=form.length.data)
         quiz = quiz_setup.setup_quiz()
         # TODO: Intatiate Quiz Model
-        # TODO: Commit Quiz Model into DB (question_list will be empty)
+        db_quiz = Quiz(category=quiz.category,
+                       quiz_type=quiz.quiz_type,
+                       user=current_user)
         # user = current_user OR guest (where do I create guest??)
+        # TODO: Commit Quiz Model into DB (question_list will be empty)
+        db.session.add(db_quiz)
+        db.session.commit()
         # TODO: Pass Quiz ID to /quiz via URL???
         # TODO: Serialize question_list to JSON and store in Session
         # Begin the quiz with question at index 0 of quiz.question_list
-        return redirect(url_for('core.quiz', question=0))
+        return redirect(url_for('core.quiz',
+                                quiz_id=db_quiz.quiz_id, question=0))
     return render_template('quiz_setup.html', form=form)
 
 
 # TODO: also add Quiz ID into URL so we know where to commit questions
-@bp.route('/quiz/<question>', methods=['GET', 'POST'])
+@bp.route('/quiz/<int:quiz_id>/<int:question>', methods=['GET', 'POST'])
 def quiz(question):
     form = QuestionForm()
     # TODO: pull next question from session and deserialize
