@@ -47,14 +47,13 @@ def quiz(quiz_id, question):
     form = QuestionForm()
     # TODO: abstract some of the below logic into QuizManager
     if form.validate_on_submit():
-        # TODO: check user_answer & update Question.correct
         q['correct'] = QuizManager.check(q['answer'], form.answer.data)
         # TEMPORARY
         if q['correct']:
             flash('Correct!', 'info')
         else:
             flash(f'Hmm not quite. The correct answer is {q["answer"]}', 'info')
-        # instantiate Question model object and commit to db
+        # query db for quiz-parent of question
         quiz = Quiz.query.filter_by(quiz_id=quiz_id).first_or_404()
         finished_question = Question(key=q['key'],
                                      answer=q['answer'],
@@ -65,7 +64,6 @@ def quiz(quiz_id, question):
         db.session.add(finished_question)
         db.session.commit()
         # TODO: generate feedback via QuizManager
-        # TODO: perhaps store quiz state in Session ??
         n = str(q['n'] + 1)
         if n not in session:
             return redirect(url_for('core.quiz_results', quiz_id=quiz_id))
