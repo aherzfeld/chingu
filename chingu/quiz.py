@@ -44,10 +44,6 @@ class Quiz(object):
         # add underscore to make private??
         self.key_list = self.make_key_list
         self.question_list = self.make_question_list()
-        self.num_correct = 0
-        self.num_wrong = 0
-        # Will be handled by the Model
-        # self.date_taken = None
 
     @property
     def make_key_list(self):
