@@ -43,7 +43,7 @@ class Quiz(object):
         self.type_method = self.types[self.type]
         # add underscore to make private??
         self.key_list = self.make_key_list
-        self.question_list = self.make_question_list
+        self.question_list = self.make_question_list()
         self.num_correct = 0
         self.num_wrong = 0
         # Will be handled by the Model
@@ -55,7 +55,6 @@ class Quiz(object):
         key_list = list(self.dictionary)
         return random.sample(key_list, self.length)
 
-    # TODO: add question string creation here
     @staticmethod
     def question_string(key, quiz_type):
         """ Receives key & quiz_type, returns formatted question str """
@@ -66,49 +65,15 @@ class Quiz(object):
             return '\nWhat is the {} tense form of {}?'.format(
                 quiz_type, key)
 
-    ### THIS IS AN EXPERIMENT FOR EASIER JSON ###
-    @property
     def make_question_list(self):
         """ Returns list of Question objects - one for each key in key_list """
 
         return [{'key': k,
-                'answer': self.type_method(k),
-                'definition': self.dictionary[k],
-                'question': self.question_string(k, self.type),
-                'correct': None,
-                'n': self.key_list.index(k) + 1} for k in self.key_list]
-
-        # return [Question(k, self.type_method(k), self.dictionary[k],
-        #         self.question_string(k, self.type)) for k in self.key_list]
-
-    ###### THESE WILL ALL BE MOVED TO QUIZ MANAGER ########
-
-    # TODO: this can be removed (replaced by query in QuizManager)
-    @property
-    def questions_asked(self):
-        return self.num_correct + self.num_wrong
-
-    # TODO: this can be removed (replaced by query in QuizManager)
-    @property
-    def questions_remaining(self):
-        return self.length - (self.num_correct + self.num_wrong)
-
-    # TODO: this can be removed (replaced by query in QuizManager)
-    @property
-    def score_percent(self):
-        return round(self.num_correct / self.questions_asked, 2)
-
-    # TODO: this can be removed (replaced by query in QuizManager)
-    # can this be better implemented with setters, getters?
-    def update_score(self, boolean):
-        """ Receives Boolean, updates num_correct(True) / num_wrong(False) """
-        if not isinstance(boolean, bool):
-            return False
-        if boolean:
-            self.num_correct += 1
-        elif not boolean:
-            self.num_wrong += 1
-        return True
+                 'answer': self.type_method(k),
+                 'definition': self.dictionary[k],
+                 'question': self.question_string(k, self.type),
+                 'correct': None,
+                 'n': self.key_list.index(k) + 1} for k in self.key_list]
 
 
 class VerbQuiz(Quiz, Verb):
@@ -197,7 +162,6 @@ class QuizInterface():
 
         return input(question_string + '  ')
 
-    # TODO: update to use question object DONE
     def ask_question(self, question):
         """ Returns question object with .correct attribute updated,
             increments quiz.num_correct / num_wrong based on user input

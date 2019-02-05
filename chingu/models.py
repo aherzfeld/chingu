@@ -54,18 +54,32 @@ class Quiz(db.Model):
                                 back_populates='quiz')
     user = db.relationship('User', back_populates='quizzes')
 
+    @property
     def num_correct(self):
         return len([q for q in self.questions if q.correct])
 
+    @property
     def num_wrong(self):
-        return len(self.questions) - self.num_correct()
+        return len(self.questions) - self.num_correct
+
+    @property
+    def questions_asked(self):
+        return self.num_correct + self.num_wrong
+
+    @property
+    def questions_remaining(self):
+        return self.length - (self.num_correct + self.num_wrong)
+
+    @property
+    def score_percent(self):
+        return round(self.num_correct / self.questions_asked, 2)
 
     def results(self):
         """ Return formatted string summary of quiz results """
 
-        return 'You got {} question{} correct and {} question{} wrong.\n'.format(
-            self.num_correct(), '' if self.num_correct() == 1 else 's',
-            self.num_wrong(), '' if self.num_wrong() == 1 else 's')
+        return 'You got {} question{} correct and {} question{} wrong.'.format(
+            self.num_correct, '' if self.num_correct == 1 else 's',
+            self.num_wrong, '' if self.num_wrong == 1 else 's')
 
     # can use string formatting for title case
     def __str__(self):

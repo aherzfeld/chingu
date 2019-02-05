@@ -67,7 +67,6 @@ def quiz(quiz_id, question):
         db.session.commit()
         # TODO: generate feedback via QuizManager
         # TODO: perhaps store quiz state in Session ??
-        # TODO: need logic to check for no more questions (redirect to results)
         n = str(q['n'] + 1)
         if n not in session:
             return redirect(url_for('core.quiz_results', quiz_id=quiz_id))
@@ -75,7 +74,6 @@ def quiz(quiz_id, question):
     return render_template('quiz.html', form=form, question=q)
 
 
-# TODO: create quiz/results route
 @bp.route('/quiz/<int:quiz_id>/results', methods=['GET', 'POST'])
 def quiz_results(quiz_id):
     quiz = Quiz.query.filter_by(quiz_id=quiz_id).first_or_404()
