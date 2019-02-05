@@ -74,7 +74,7 @@ class Quiz(db.Model):
     #     self.user = user
 
     def num_correct(self):
-        return self.questions.count(Question.correct is True)
+        return len([q for q in self.questions if q.correct])
 
     def num_wrong(self):
         return len(self.questions) - self.num_correct()
