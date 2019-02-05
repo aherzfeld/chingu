@@ -76,9 +76,12 @@ def quiz(quiz_id, question):
 
 
 # TODO: create quiz/results route
-@bp.route('quiz/<int:quiz_id>/results', methods=['GET', 'POST'])
+@bp.route('/quiz/<int:quiz_id>/results', methods=['GET', 'POST'])
 def quiz_results(quiz_id):
-    pass
+    quiz = Quiz.query.filter_by(quiz_id=quiz_id).first_or_404()
+    return render_template('quiz_results.html',
+                           quiz_string=quiz.__str__(),
+                           results=quiz.results())
 
 
 

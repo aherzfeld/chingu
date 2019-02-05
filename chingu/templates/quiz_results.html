@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Quiz Results{% endblock %}
+
+{% block content %}
+
+<div class="bgBase">
+
+  <div class="container h-100">  
+    <div class="row justify-content-center align-items-center h-100">
+      <div class="col col-sm-8 col-md-6 col-lg-6 col-xl-5 text-white">
+        
+        <h1 class="display-4">Quiz Results</h1>
+
+        <p>You completed a {{ quiz_string }}.</p>
+
+        <p>{{ results }}</p>
+
+      </div>
+    </div>  
+  </div>
+   
+</div>
+
+{% endblock %}
