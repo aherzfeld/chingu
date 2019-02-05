@@ -20,7 +20,7 @@
 
         <div class="form-group">
           {{ form.answer.label }}
-          {{ form.answer(class="form-control") }}
+          {{ form.answer(class="form-control", autofocus=true) }}
         </div>
         {% for error in form.answer.errors %}
         <span style="color: red;">[{{ error }}]</span>
