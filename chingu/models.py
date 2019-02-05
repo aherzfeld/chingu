@@ -7,16 +7,20 @@ from flask_login import UserMixin
 from chingu import db, login
 
 
-# TODO: combine Question class and model into one model here
-# TODO: combine Quiz class and model into one model here
 # TODO: Analyse viability, then remove need for old_db.py
 # TODO: create mini-classes for quiz categories / quiz_types
 # to be used by Quiz_Setup, QuizSetupForm validation etc
-# TODO: consider namedtuple for quiz results output etc
 
 
 class Question(db.Model):
-    """ Question object that will be a part of a Quiz's question_list """
+    """ Question object that will be a part of a Quiz's question_list
+
+        Attributes:
+            key - word/item to be tested from subject dictionary
+            answer - correct answer generated via Quiz.type_method
+            definition - word definition from subject dict
+            question - question_string created by quiz.Quiz
+    """
 
     __tablename__ = 'questions'
 
@@ -29,23 +33,6 @@ class Question(db.Model):
     quiz_id = db.Column(db.Integer, db.ForeignKey('quizzes.id'))
 
     quiz = db.relationship('Quiz', back_populates='questions')
-
-    # TODO: can most likely remove this 
-    # def __init__(self, key, answer, definition, question):
-    #     """ Initiate using params prepared by Quiz object
-
-    #     Params:
-    #         key - word/item to be tested from subject dictionary
-    #         answer - correct answer generated via Quiz.type_method
-    #         definition - word definition from subject dict
-    #         question - question_string created by quiz.Quiz
-
-    #     """
-    #     self.key = key
-    #     self.answer = answer
-    #     self.definition = definition
-    #     self.question = question
-    #     self.correct = None
 
     def __repr__(self):
         return (f"<Question(key='{self.key}', answer='{self.answer}', "
@@ -66,12 +53,6 @@ class Quiz(db.Model):
     questions = db.relationship('Question', order_by=Question.question_id,
                                 back_populates='quiz')
     user = db.relationship('User', back_populates='quizzes')
-
-    # Might be unnecessary
-    # def __init__(self, category, quiz_type, user):
-    #     self.category = category
-    #     self.quiz_type = quiz_type
-    #     self.user = user
 
     def num_correct(self):
         return len([q for q in self.questions if q.correct])
