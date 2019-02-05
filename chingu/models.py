@@ -73,6 +73,15 @@ class Quiz(db.Model):
     #     self.quiz_type = quiz_type
     #     self.user = user
 
+    # can use string formatting for title case
+    def __str__(self):
+        """ Return quiz_string for printing based on quiz_specs """
+
+        if self.quiz_type == 'definition':
+            return f'{self.category} {self.quiz_type} quiz'
+        else:
+            return f'{self.quiz_type} tense {self.category} quiz'
+
     def __repr__(self):
         return (f"<Quiz(category='{self.category}', "
                 f"quiz_type='{self.quiz_type}', quiz_id={self.quiz_id}, "

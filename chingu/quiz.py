@@ -49,15 +49,6 @@ class Quiz(object):
         # Will be handled by the Model
         # self.date_taken = None
 
-    # can use string formatting for title case
-    def __str__(self):
-        """ Return quiz_string for printing based on quiz_specs """
-
-        if self.type == 'definition':
-            return f'{self.category} {self.type} quiz'
-        else:
-            return f'{self.type} tense {self.category} quiz'
-
     @property
     def make_key_list(self):
         """ Returns (quiz_length) random keys from dictionary """
@@ -261,3 +252,16 @@ class QuizInterface():
             self.quiz.num_correct, '' if self.quiz.num_correct == 1 else 's',
             self.quiz.num_wrong, '' if self.quiz.num_wrong == 1 else 's'))
         return True
+
+
+
+
+
+
+
+
+
+
+
+
+
