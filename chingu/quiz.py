@@ -1,4 +1,4 @@
-# Quiz parent class & subject-specific quiz sub-classes
+""" Quiz factory and interface manager classes """
 import random
 from datetime import datetime
 from abc import ABCMeta

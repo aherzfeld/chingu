@@ -1,4 +1,4 @@
-# Verb class
+# Verb class containing conjugation logic
 
 
 class Verb():
