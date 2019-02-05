@@ -1,6 +1,5 @@
-from flask import (current_app, flash, jsonify, redirect, render_template,
-                   request, session, url_for)
-from flask_login import current_user, login_required
+from flask import (flash, redirect, render_template, session, url_for)
+from flask_login import current_user  # login_required
 from chingu import db
 from chingu.models import Question, Quiz
 from chingu.core import bp
