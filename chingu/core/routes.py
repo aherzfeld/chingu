@@ -52,9 +52,9 @@ def quiz(quiz_id, question):
         q['correct'] = QuizManager.check(q['answer'], form.answer.data)
         # TEMPORARY
         if q['correct']:
-            flash('Correct!')
+            flash('Correct!', 'info')
         else:
-            flash(f'Hmm not quite. The correct answer is {q["answer"]}')
+            flash(f'Hmm not quite. The correct answer is {q["answer"]}', 'info')
         # instantiate Question model object and commit to db
         quiz = Quiz.query.filter_by(quiz_id=quiz_id).first_or_404()
         finished_question = Question(key=q['key'],
