@@ -4,7 +4,6 @@ from datetime import datetime
 from abc import ABCMeta
 from chingu.verb import Verb
 from chingu.verblist import verb_dict
-from chingu.models import Question
 
 
 class Quiz(object):
