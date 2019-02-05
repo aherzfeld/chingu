@@ -41,13 +41,12 @@ def quiz_setup():
     return render_template('quiz_setup.html', form=form)
 
 
+# TODO: refactor - clean up variable names
 @bp.route('/quiz/<int:quiz_id>/<question>', methods=['GET', 'POST'])
 def quiz(quiz_id, question):
     q = session[question]
     form = QuestionForm()
-    # TODO: pull next question from session and deserialize - DONE
-    # TODO: render question - DONE
-    # TODO: add user answer to Question.answer
+    # TODO: abstract some of the below logic into QuizManager
     if form.validate_on_submit():
         # TODO: check user_answer & update Question.correct
         q['correct'] = QuizManager.check(q['answer'], form.answer.data)
@@ -64,19 +63,22 @@ def quiz(quiz_id, question):
                                      question=q['question'],
                                      correct=q['correct'],
                                      quiz=quiz)
-        # TODO: commit question to DB after user answers (by Quiz ID in url)
         db.session.add(finished_question)
         db.session.commit()
         # TODO: generate feedback via QuizManager
         # TODO: perhaps store quiz state in Session ??
         # TODO: need logic to check for no more questions (redirect to results)
         n = str(q['n'] + 1)
+        if n not in session:
+            return redirect(url_for('core.quiz_results', quiz_id=quiz_id))
         return redirect(url_for('core.quiz', quiz_id=quiz_id, question=n))
     return render_template('quiz.html', form=form, question=q)
 
+
 # TODO: create quiz/results route
-
-
+@bp.route('quiz/<int:quiz_id>/results', methods=['GET', 'POST'])
+def quiz_results(quiz_id):
+    pass
 
 
 
