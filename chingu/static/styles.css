@@ -112,10 +112,17 @@ body, html {
     color: white;
 }
 
+#quizSetupForm .btn {
+    color: #02fcf8;
+}
 
+#quizForm .btn {
+    color: #02fcf8;
+}
 
-
-
+#quizResults .btn {
+    color: #02fcf8;
+}
 
 
 
