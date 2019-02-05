@@ -42,11 +42,10 @@ class Quiz(object):
         # add underscore to make private??
         self.type_method = self.types[self.type]
         # add underscore to make private??
-        self.key_list = self.make_key_list
+        self.key_list = self._make_key_list()
         self.question_list = self.make_question_list()
 
-    @property
-    def make_key_list(self):
+    def _make_key_list(self):
         """ Returns (quiz_length) random keys from dictionary """
         key_list = list(self.dictionary)
         return random.sample(key_list, self.length)
