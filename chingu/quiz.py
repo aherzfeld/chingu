@@ -4,7 +4,7 @@ from datetime import datetime
 from abc import ABCMeta
 from chingu.verb import Verb
 from chingu.verblist import verb_dict
-from models import Question
+from chingu.models import Question
 
 
 class Quiz(object):
@@ -75,12 +75,20 @@ class Quiz(object):
             return '\nWhat is the {} tense form of {}?'.format(
                 quiz_type, key)
 
+    ### THIS IS AN EXPERIMENT FOR EASIER JSON ###
     @property
     def make_question_list(self):
         """ Returns list of Question objects - one for each key in key_list """
 
-        return [Question(k, self.type_method(k), self.dictionary[k],
-                self.question_string(k, self.type)) for k in self.key_list]
+        return [{'key': k,
+                'answer': self.type_method(k),
+                'definition': self.dictionary[k],
+                'question': self.question_string(k, self.type),
+                'correct': None,
+                'n': self.key_list.index(k) + 1} for k in self.key_list]
+
+        # return [Question(k, self.type_method(k), self.dictionary[k],
+        #         self.question_string(k, self.type)) for k in self.key_list]
 
     ###### THESE WILL ALL BE MOVED TO QUIZ MANAGER ########
 

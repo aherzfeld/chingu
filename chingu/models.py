@@ -30,21 +30,22 @@ class Question(db.Model):
 
     quiz = db.relationship('Quiz', back_populates='questions')
 
-    def __init__(self, key, answer, definition, question):
-        """ Initiate using params prepared by Quiz object
+    # TODO: can most likely remove this 
+    # def __init__(self, key, answer, definition, question):
+    #     """ Initiate using params prepared by Quiz object
 
-        Params:
-            key - word/item to be tested from subject dictionary
-            answer - correct answer generated via Quiz.type_method
-            definition - word definition from subject dict
-            question - question_string created by quiz.Quiz
+    #     Params:
+    #         key - word/item to be tested from subject dictionary
+    #         answer - correct answer generated via Quiz.type_method
+    #         definition - word definition from subject dict
+    #         question - question_string created by quiz.Quiz
 
-        """
-        self.key = key
-        self.answer = answer
-        self.definition = definition
-        self.question = question
-        self.correct = None
+    #     """
+    #     self.key = key
+    #     self.answer = answer
+    #     self.definition = definition
+    #     self.question = question
+    #     self.correct = None
 
     def __repr__(self):
         return (f"<Question(key='{self.key}', answer='{self.answer}', "
