@@ -93,7 +93,7 @@ class Quiz(db.Model):
     def __repr__(self):
         return (f"<Quiz(category='{self.category}', "
                 f"quiz_type='{self.quiz_type}', quiz_id={self.quiz_id}, "
-                f"taken_on={self.taken_on}>)")
+                f"taken_on={self.taken_on})>")
 
 
 class User(db.Model, UserMixin):
@@ -147,7 +147,7 @@ class User(db.Model, UserMixin):
 
     def __repr__(self):
         return (f"<User(id={self.id}, username='{self.username}',"
-                f" created_on={self.created_on})")
+                f" created_on={self.created_on})>")
 
 
 class Noun(db.model):
@@ -162,7 +162,7 @@ class Noun(db.model):
 
     def __repr__(self):
         return (f"<Noun(_id={self._id}, category={self.category},"
-                f" word={self.word}, definition={self.definition})")
+                f" word={self.word}, definition={self.definition})>")
 
 
 # user loader function to help flask-login load a user from the db
