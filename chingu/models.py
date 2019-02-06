@@ -165,6 +165,21 @@ class Noun(db.model):
                 f" word={self.word}, definition={self.definition})>")
 
 
+class Verb(db.model):
+    __tablename__ = 'verbs'
+
+    _id = db.Column('id', db.Integer, primary_key=True)
+    category = db.Column('category', db.String)
+    word = db.Column('word', db.String, nullable=False)
+    definition = db.Column('definition', db.String, nullable=False)
+    # added_on - add this once switched to Postgres
+    # dificulty = once dificulty scale is designed
+
+    def __repr__(self):
+        return (f"<Verb(_id={self._id}, category={self.category},"
+                f" word={self.word}, definition={self.definition})>")
+
+
 # user loader function to help flask-login load a user from the db
 # flask-login passes the id as a string so it needs to be converted for the db
 @login.user_loader
