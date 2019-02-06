@@ -96,6 +96,7 @@ class Quiz(db.Model):
                 f"taken_on={self.taken_on})>")
 
 
+# TODO: add admin column
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
 
@@ -155,7 +156,7 @@ class Noun(db.Model):
 
     _id = db.Column('id', db.Integer, primary_key=True)
     category = db.Column('category', db.String)
-    word = db.Column('word', db.String, nullable=False)
+    word = db.Column('word', db.String, unique=True, nullable=False)
     definition = db.Column('definition', db.String, nullable=False)
     # added_on - add this once switched to Postgres
     # dificulty = once dificulty scale is designed
@@ -165,12 +166,13 @@ class Noun(db.Model):
                 f" word={self.word}, definition={self.definition})>")
 
 
+# setting word = unique=True for now - need to think on diff words w/ same spelling
 class Verb(db.Model):
     __tablename__ = 'verbs'
 
     _id = db.Column('id', db.Integer, primary_key=True)
     category = db.Column('category', db.String)
-    word = db.Column('word', db.String, nullable=False)
+    word = db.Column('word', db.String, unique=True, nullable=False)
     definition = db.Column('definition', db.String, nullable=False)
     # added_on - add this once switched to Postgres
     # dificulty = once dificulty scale is designed
