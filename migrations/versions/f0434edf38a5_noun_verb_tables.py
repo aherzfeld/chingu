@@ -1,8 +1,8 @@
 """Noun & Verb tables
 
-Revision ID: 194a3f5eaae7
+Revision ID: f0434edf38a5
 Revises: 9ed5b81fb12b
-Create Date: 2019-02-06 17:27:24.788157
+Create Date: 2019-02-06 18:04:46.183764
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '194a3f5eaae7'
+revision = 'f0434edf38a5'
 down_revision = '9ed5b81fb12b'
 branch_labels = None
 depends_on = None
@@ -23,14 +23,16 @@ def upgrade():
     sa.Column('category', sa.String(), nullable=True),
     sa.Column('word', sa.String(), nullable=False),
     sa.Column('definition', sa.String(), nullable=False),
-    sa.PrimaryKeyConstraint('id')
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('word')
     )
     op.create_table('verbs',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('category', sa.String(), nullable=True),
     sa.Column('word', sa.String(), nullable=False),
     sa.Column('definition', sa.String(), nullable=False),
-    sa.PrimaryKeyConstraint('id')
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('word')
     )
     # ### end Alembic commands ###
 
