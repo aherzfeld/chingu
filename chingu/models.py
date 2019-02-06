@@ -174,6 +174,7 @@ class Verb(db.model):
     definition = db.Column('definition', db.String, nullable=False)
     # added_on - add this once switched to Postgres
     # dificulty = once dificulty scale is designed
+    # meta_info - to distinguish same spelled verbs
 
     def __repr__(self):
         return (f"<Verb(_id={self._id}, category={self.category},"

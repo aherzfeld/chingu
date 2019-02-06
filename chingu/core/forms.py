@@ -17,3 +17,12 @@ class QuizSetupForm(FlaskForm):
 class QuestionForm(FlaskForm):
     answer = StringField('Answer', validators=[DataRequired()])
     submit = SubmitField('Submit Answer')
+
+
+class NewNounForm(FlaskForm):
+    category = SelectField('Category', choices=[('body', 'Body'),
+        ('clothing', 'Clothing'), ('family', 'Family'), ('home', 'Home'),
+        ('numbers', 'Numbers'), ('transportation', 'Transportation')])
+    word = StringField('Korean Word', validators=[DataRequired()])
+    definition = StringField('Definition', validators=[DataRequired()])
+    submit = SubmitField('Save')
