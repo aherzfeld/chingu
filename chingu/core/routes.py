@@ -15,11 +15,16 @@ def index():
 
 
 # TODO: decorator to only allow admin User
-# TODO: admin route
+# TODO: check for duplicates and flash warning
 @bp.route('/admin', methods=['GET', 'POST'])
 def admin():
     form = NewNounForm()
+    # maybe the below validation could move into form validations
     if form.validate_on_submit():
+        db_noun = Noun.query.filter_by(word=form.word.data).first()
+        if db_noun:
+            flash(f'{db_noun.word} is already in the database', 'warning')
+            return redirect(url_for('core.admin'))
         noun = Noun(category=form.category.data,
                     word=form.word.data,
                     definition=form.definition.data)
