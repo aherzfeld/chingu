@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+
+<div class="bgBase">
+
+  <div class="container h-100">  
+    <div class="row justify-content-center align-items-center h-100">
+      <div class="col col-sm-8 col-md-6 col-lg-6 col-xl-5 text-white">
+        
+        <h1 class="display-4">Add Noun</h1>
+
+        <form id="addNounForm" action="" method="post" autocomplete="off">
+        {{ form.hidden_tag() }}
+
+        <div class="form-group">
+          {{ form.category.label }}
+          {{ form.category(class="form-control", autofocus=true) }}
+        </div>
+        {% for error in form.category.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+        <div class="form-group">
+          {{ form.word.label }}
+          {{ form.word(class="form-control") }}
+        </div>
+        {% for error in form.word.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+        <div class="form-group">
+          {{ form.definition.label }}
+          {{ form.definition(class="form-control",
+                         placeholder="lowercase, no punctuation") }}
+        </div>
+        {% for error in form.definition.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+        <p>{{ form.submit(class="btn btn-outline-info") }}</p>
+        </form>
+
+      </div>
+    </div>  
+  </div>
+  
+</div>
+
+{% endblock %}
