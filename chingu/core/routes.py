@@ -1,9 +1,9 @@
 from flask import (flash, redirect, render_template, session, url_for)
 from flask_login import current_user  # login_required
 from chingu import db
-from chingu.models import Question, Quiz
+from chingu.models import Noun, Question, Quiz
 from chingu.core import bp
-from chingu.core.forms import QuizSetupForm, QuestionForm
+from chingu.core.forms import NewNounForm, QuizSetupForm, QuestionForm
 from chingu.quiz import QuizManager, QuizSetup
 
 
@@ -12,6 +12,22 @@ from chingu.quiz import QuizManager, QuizSetup
 # @login_required
 def index():
     return render_template('index.html')
+
+
+# TODO: decorator to only allow admin User
+# TODO: admin route
+@bp.route('/admin', methods=['GET', 'POST'])
+def admin():
+    form = NewNounForm()
+    if form.validate_on_submit():
+        noun = Noun(category=form.category.data,
+                    word=form.word.data,
+                    definition=form.definition.data)
+        db.session.add(noun)
+        db.session.commit()
+        flash('New noun added.', 'success')
+        return redirect(url_for('core.admin'))
+    return render_template('admin.html', form=form)
 
 
 # TODO: add a decorator to log anonymour users in as Guest???
