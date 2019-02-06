@@ -150,7 +150,7 @@ class User(db.Model, UserMixin):
                 f" created_on={self.created_on})>")
 
 
-class Noun(db.model):
+class Noun(db.Model):
     __tablename__ = 'nouns'
 
     _id = db.Column('id', db.Integer, primary_key=True)
@@ -165,7 +165,7 @@ class Noun(db.model):
                 f" word={self.word}, definition={self.definition})>")
 
 
-class Verb(db.model):
+class Verb(db.Model):
     __tablename__ = 'verbs'
 
     _id = db.Column('id', db.Integer, primary_key=True)
