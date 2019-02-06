@@ -3,6 +3,7 @@ from flask import Flask
 from flask_login import LoginManager
 from flask_mail import Mail
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 
 
 # Allez les extensiones!
@@ -10,6 +11,7 @@ login = LoginManager()
 # this tells flask-login which view function handles logins
 login.login_view = 'auth.login'
 db = SQLAlchemy()
+migrate = Migrate()
 mail = Mail()
 
 
@@ -48,6 +50,7 @@ def create_app(test_config=None):
 
     # Allez les extensiones!
     db.init_app(app)
+    migrate.init_app(app, db)
     login.init_app(app)
     mail.init_app(app)
 
