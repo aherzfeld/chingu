@@ -1,7 +1,7 @@
 from flask import (flash, redirect, render_template, session, url_for)
 from flask_login import current_user  # login_required
 from chingu import db
-from chingu.models import Noun, Question, Quiz
+from chingu.models import Noun, Question, Quiz, Verb
 from chingu.core import bp
 from chingu.core.forms import (NewNounForm, NewVerbForm, QuizSetupForm,
                                QuestionForm)
@@ -21,7 +21,7 @@ def admin():
     noun_form = NewNounForm()
     verb_form = NewVerbForm()
     # maybe the below validation could move into form validations
-    if noun_form.validate_on_submit():
+    if noun_form.noun_submit.data and noun_form.validate():
         db_noun = Noun.query.filter_by(word=noun_form.word.data).first()
         if db_noun:
             flash(f'{db_noun.word} is already in the database', 'warning')
@@ -32,6 +32,18 @@ def admin():
         db.session.add(noun)
         db.session.commit()
         flash('New noun added.', 'success')
+        return redirect(url_for('core.admin'))
+    # verb_form
+    if verb_form.verb_submit.data and verb_form.validate():
+        db_verb = Noun.query.filter_by(word=verb_form.word.data).first()
+        if db_verb:
+            flash(f'{db_verb.word} is already in the database', 'warning')
+            return redirect(url_for('core.admin'))
+        verb = Verb(word=verb_form.word.data,
+                    definition=verb_form.definition.data)
+        db.session.add(verb)
+        db.session.commit()
+        flash('New verb added.', 'success')
         return redirect(url_for('core.admin'))
     return render_template('admin.html',
                            noun_form=noun_form,
