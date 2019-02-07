@@ -3,7 +3,8 @@ from flask_login import current_user  # login_required
 from chingu import db
 from chingu.models import Noun, Question, Quiz
 from chingu.core import bp
-from chingu.core.forms import NewNounForm, QuizSetupForm, QuestionForm
+from chingu.core.forms import (NewNounForm, NewVerbForm, QuizSetupForm,
+                               QuestionForm)
 from chingu.quiz import QuizManager, QuizSetup
 
 
@@ -17,21 +18,24 @@ def index():
 # TODO: decorator to only allow admin User
 @bp.route('/admin', methods=['GET', 'POST'])
 def admin():
-    form = NewNounForm()
+    noun_form = NewNounForm()
+    verb_form = NewVerbForm()
     # maybe the below validation could move into form validations
-    if form.validate_on_submit():
-        db_noun = Noun.query.filter_by(word=form.word.data).first()
+    if noun_form.validate_on_submit():
+        db_noun = Noun.query.filter_by(word=noun_form.word.data).first()
         if db_noun:
             flash(f'{db_noun.word} is already in the database', 'warning')
             return redirect(url_for('core.admin'))
-        noun = Noun(category=form.category.data,
-                    word=form.word.data,
-                    definition=form.definition.data)
+        noun = Noun(category=noun_form.category.data,
+                    word=noun_form.word.data,
+                    definition=noun_form.definition.data)
         db.session.add(noun)
         db.session.commit()
         flash('New noun added.', 'success')
         return redirect(url_for('core.admin'))
-    return render_template('admin.html', form=form)
+    return render_template('admin.html',
+                           noun_form=noun_form,
+                           verb_form=verb_form)
 
 
 # TODO: add a decorator to log anonymour users in as Guest???

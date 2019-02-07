@@ -13,31 +13,58 @@
         <h1 class="display-4">Add Noun</h1>
 
         <form id="addNounForm" action="" method="post" autocomplete="off">
-        {{ form.hidden_tag() }}
+        {{ noun_form.hidden_tag() }}
 
         <div class="form-group">
-          {{ form.category.label }}
-          {{ form.category(class="form-control", autofocus=true) }}
+          {{ noun_form.category.label }}
+          {{ noun_form.category(class="form-control", autofocus=true) }}
         </div>
-        {% for error in form.category.errors %}
+        {% for error in noun_form.category.errors %}
         <span style="color: red;">[{{ error }}]</span>
         {% endfor %}
         <div class="form-group">
-          {{ form.word.label }}
-          {{ form.word(class="form-control") }}
+          {{ noun_form.word.label }}
+          {{ noun_form.word(class="form-control") }}
         </div>
-        {% for error in form.word.errors %}
+        {% for error in noun_form.word.errors %}
         <span style="color: red;">[{{ error }}]</span>
         {% endfor %}
         <div class="form-group">
-          {{ form.definition.label }}
-          {{ form.definition(class="form-control",
+          {{ noun_form.definition.label }}
+          {{ noun_form.definition(class="form-control",
                          placeholder="lowercase, no punctuation") }}
         </div>
-        {% for error in form.definition.errors %}
+        {% for error in noun_form.definition.errors %}
         <span style="color: red;">[{{ error }}]</span>
         {% endfor %}
-        <p>{{ form.submit(class="btn btn-outline-info") }}</p>
+        <p>{{ noun_form.noun_submit(class="btn btn-outline-info") }}</p>
+        </form>
+
+      </div>
+
+      <div class="col col-sm-8 col-md-6 col-lg-6 col-xl-5 text-white">
+        
+        <h1 class="display-4">Add Verb</h1>
+
+        <form id="addVerbForm" action="" method="post" autocomplete="off">
+        {{ verb_form.hidden_tag() }}
+
+        <div class="form-group">
+          {{ verb_form.word.label }}
+          {{ verb_form.word(class="form-control") }}
+        </div>
+        {% for error in verb_form.word.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+        <div class="form-group">
+          {{ verb_form.definition.label }}
+          {{ verb_form.definition(class="form-control",
+                         placeholder="lowercase, no punctuation") }}
+        </div>
+        {% for error in verb_form.definition.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+        <p>{{ verb_form.verb_submit(class="btn btn-outline-info") }}</p>
         </form>
 
       </div>
