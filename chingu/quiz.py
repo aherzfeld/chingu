@@ -151,7 +151,7 @@ class QuizSetup():
                   'noun': 'NounQuiz'}
 
     types = {'verb': ('definition', 'present', 'future'),
-             'noun': ('demo1', 'demo2')}  # not yet implemented
+             'noun': ('definition')}
 
     def __init__(self, category=None, quiz_type=None, length=None):
         """ Prompts user for input upon initialization """
