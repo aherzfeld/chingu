@@ -15,7 +15,6 @@ def index():
 
 
 # TODO: decorator to only allow admin User
-# TODO: check for duplicates and flash warning
 @bp.route('/admin', methods=['GET', 'POST'])
 def admin():
     form = NewNounForm()
