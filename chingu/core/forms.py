@@ -28,4 +28,10 @@ class NewNounForm(FlaskForm):
         ('numbers', 'Numbers'), ('transportation', 'Transportation')])
     word = StringField('Korean Word', validators=[DataRequired()])
     definition = StringField('Definition', validators=[DataRequired()])
-    submit = SubmitField('Save')
+    noun_submit = SubmitField('Save')
+
+
+class NewVerbForm(FlaskForm):
+    word = StringField('Korean Word', validators=[DataRequired()])
+    definition = StringField('Definition', validators=[DataRequired()])
+    verb_submit = SubmitField('Save')
