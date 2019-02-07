@@ -83,6 +83,8 @@ def quiz(quiz_id, question):
                                      quiz=quiz)
         db.session.add(finished_question)
         db.session.commit()
+        # remove the question from flask session
+        session.pop(question)
         # TODO: generate feedback via QuizManager
         n = str(q['n'] + 1)
         if n not in session:

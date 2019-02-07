@@ -2,7 +2,6 @@
 import random
 from datetime import datetime
 from abc import ABCMeta
-from SQLAlchemy import func
 from chingu.verb import Verb
 from chingu.verblist import verb_dict
 from chingu.models import Noun
@@ -72,42 +71,32 @@ class Quiz(object):
                  'n': self.key_list.index(k) + 1} for k in self.key_list]
 
 
+# TODO: THIS WHOLE CLASS IS SUPER HACKED FOR SHORT TERM
 class NounQuiz(Quiz):
-    """ Main purpose is to create question_data to pass to QuizInterface
-
-    Params:
-        quiz_type - Verb quiz subtype (i.e. 'present')
-        quiz_length - how many questions the quiz will be
-
-    Class Attributes:
-        category - Category of child quiz class (i.e. 'verb')
-        dictionary - subject specific dict (i.e. verb_dict)
-        types - dict of subtypes(keys) with corresponding methods(values)
-
-    Attributes:
-        type - Verb category quiz subtype (param: quiz_type)
-        type_method - algorithm to generate answer from key based on type
-        length - number of questions (param: quiz_length)
-        key_list - (quiz_length) random keys from dictionary
-        question_list - (quiz_length) list of Question objects
-    """
+    """ Main purpose is to create question_data to pass to QuizInterface """
 
     category = 'noun'
-    dictionary = None
-    types = {'definition': dictionary.get}
+    dictionary = {}
+    types = {'definition': None}
 
+    # Duplicating Quiz init is temporary hack until Verb & Noun logic same
     def __init__(self, quiz_type='definition', quiz_length=10):
         super().__init__(quiz_type, quiz_length)
 
-    def _make_key_list(self):
-        return Noun.query.order_by(func.rand()).limit(self.length)
+    @staticmethod
+    def question_string(key):
+        return '\nWhat is the definition of {}?'.format(key)
 
-    def _make_question_list(self):
+    def _make_key_list(self):
+        key_list = Noun.query.all()
+        return random.sample(key_list, self.length)
+
+    def make_question_list(self):
         """ Returns list of Question objects - one for each key in key_list """
         return [{'key': k.word,
                  'answer': k.definition,
                  'definition': k.definition,
-                 'question': self.question_string(k, self.type),
+                 'question': self.question_string(k.word),
                  'correct': None,
                  'n': self.key_list.index(k) + 1} for k in self.key_list]
 
@@ -148,7 +137,7 @@ class QuizSetup():
 
     # NounQuiz not yet implemented
     categories = {'verb': VerbQuiz,
-                  'noun': 'NounQuiz'}
+                  'noun': NounQuiz}
 
     types = {'verb': ('definition', 'present', 'future'),
              'noun': ('definition')}
