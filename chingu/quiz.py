@@ -2,8 +2,10 @@
 import random
 from datetime import datetime
 from abc import ABCMeta
+from SQLAlchemy import func
 from chingu.verb import Verb
 from chingu.verblist import verb_dict
+from chingu.models import Noun
 
 
 class Quiz(object):
@@ -65,6 +67,46 @@ class Quiz(object):
         return [{'key': k,
                  'answer': self.type_method(k),
                  'definition': self.dictionary[k],
+                 'question': self.question_string(k, self.type),
+                 'correct': None,
+                 'n': self.key_list.index(k) + 1} for k in self.key_list]
+
+
+class NounQuiz(Quiz):
+    """ Main purpose is to create question_data to pass to QuizInterface
+
+    Params:
+        quiz_type - Verb quiz subtype (i.e. 'present')
+        quiz_length - how many questions the quiz will be
+
+    Class Attributes:
+        category - Category of child quiz class (i.e. 'verb')
+        dictionary - subject specific dict (i.e. verb_dict)
+        types - dict of subtypes(keys) with corresponding methods(values)
+
+    Attributes:
+        type - Verb category quiz subtype (param: quiz_type)
+        type_method - algorithm to generate answer from key based on type
+        length - number of questions (param: quiz_length)
+        key_list - (quiz_length) random keys from dictionary
+        question_list - (quiz_length) list of Question objects
+    """
+
+    category = 'noun'
+    dictionary = None
+    types = {'definition': dictionary.get}
+
+    def __init__(self, quiz_type='definition', quiz_length=10):
+        super().__init__(quiz_type, quiz_length)
+
+    def _make_key_list(self):
+        return Noun.query.order_by(func.rand()).limit(self.length)
+
+    def _make_question_list(self):
+        """ Returns list of Question objects - one for each key in key_list """
+        return [{'key': k.word,
+                 'answer': k.definition,
+                 'definition': k.definition,
                  'question': self.question_string(k, self.type),
                  'correct': None,
                  'n': self.key_list.index(k) + 1} for k in self.key_list]

@@ -9,8 +9,7 @@ class QuizSetupForm(FlaskForm):
                                                 ('noun', 'Noun')],
                            validators=[DataRequired()])
     quiz_type = SelectField('Quiz Type', choices=[('definition', 'Definition'),
-                                                  ('present', 'Present Tense'),
-                                                  ('noun', 'Noun')],
+                                                  ('present', 'Present Tense')],
                             validators=[DataRequired()])
     length = IntegerField('Length', validators=[DataRequired(),
                                                 NumberRange(min=1, max=20)])
