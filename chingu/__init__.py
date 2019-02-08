@@ -4,6 +4,7 @@ from flask_login import LoginManager
 from flask_mail import Mail
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flask_debugtoolbar import DebugToolbarExtension
 
 
 # Allez les extensiones!
@@ -13,6 +14,7 @@ login.login_view = 'auth.login'
 db = SQLAlchemy()
 migrate = Migrate()
 mail = Mail()
+debug_toolbar = DebugToolbarExtension()
 
 
 # app factory
@@ -53,6 +55,7 @@ def create_app(test_config=None):
     migrate.init_app(app, db)
     login.init_app(app)
     mail.init_app(app)
+    debug_toolbar.init_app(app)
 
     from chingu.auth import bp as auth_bp
     """ the url_prefix is optional - any routes defined in this bp will get
