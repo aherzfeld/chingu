@@ -171,6 +171,7 @@ class Verb(db.Model):
     __tablename__ = 'verbs'
 
     _id = db.Column('id', db.Integer, primary_key=True)
+    # category might not be necessary for verbs
     category = db.Column('category', db.String)
     word = db.Column('word', db.String, unique=True, nullable=False)
     definition = db.Column('definition', db.String, nullable=False)
