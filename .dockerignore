@@ -2,7 +2,7 @@
 .gitignore
 .dockerignore
 __pycache__
+.coverage
 
 # my info
 cheatsheet.txt
-wordlist.txt
