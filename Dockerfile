@@ -5,7 +5,7 @@ LABEL maintainer="Andrew Herzfeld"
 # the -D flag creates user with system defaults
 RUN adduser -D chingu
 
-WORKDIR /home/
+WORKDIR /home/chingu
 
 COPY requirements.txt requirements.txt
 RUN python -m venv venv
@@ -13,6 +13,7 @@ RUN venv/bin/pip install -r requirements.txt
 RUN venv/bin/pip install gunicorn
 
 COPY . .
+RUN chmod +x boot.sh
 
 ENV FLASK_APP chingu
 
