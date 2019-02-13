@@ -4,5 +4,8 @@
 __pycache__
 .coverage
 
+# database
+*.sqlite
+
 # my info
 cheatsheet.txt
