@@ -27,28 +27,12 @@ def create_app(test_config=None):
     """
     app = Flask(__name__, instance_relative_config=True)
     # set some default configurations
-    app.config.from_mapping(
-        SECRET_KEY='dev',
-        # DATABASE=os.path.join(app.instance_path, 'chingu.sqlite'),
-        # if no env var is set a sqlite db will be cretaed in /instance
-        SQLALCHEMY_DATABASE_URI=os.environ.get('DATABASE_URL') or \
-        'sqlite:///' + os.path.join(app.instance_path, 'chingu.sqlite'),
-        SQLALCHEMY_TRACK_MODIFICATIONS=False,
-    )
+    app.config.from_object('config.settings')
+    # silet=True for silent failures if missing files
+    app.config.from_pyfile('settings.py', silent=True)
 
-    if test_config is None:
-        # Load the instance config, if it exists, when not testing
-        # overrides default config with values from config.py
-        app.config.from_pyfile('config.py', silent=True)
-    else:
-        # Load the test config if passed in (instead of instance config)
-        app.config.from_mapping(test_config)
-
-    # ensure the instance folder exists (that is where SQLite will be)
-    try:
-        os.makedirs(app.instance_path)
-    except OSError:
-        pass
+    if test_config:
+        app.config.update(test_config)
 
     # Allez les extensiones!
     db.init_app(app)
