@@ -5,6 +5,9 @@ LABEL maintainer="Andrew Herzfeld"
 # the -D flag creates user with system defaults
 RUN adduser -D chingu
 
+# this command is for alpine-based systems
+RUN apk update && apk add build-base postgresql-dev
+
 WORKDIR /home/chingu
 
 COPY requirements.txt requirements.txt
