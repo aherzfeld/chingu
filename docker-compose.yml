@@ -1,8 +1,8 @@
 version: '3'
 
 services:
-    
-   postgres:
+
+    postgres:
         image: 'postgres:11.1-alpine'
         env_file:
             - '.env'
@@ -10,14 +10,13 @@ services:
             - 'postgres:/var/lib/postgresql/data'
         ports:
             - '5432:5432'
+    
     web:
         build: .
         env_file:
             - '.env'
-        volumes:
-            - 
         ports:
-            - "5000:5000"
+            - "8000:5000"
     
 volumes:
     postgres:

@@ -19,3 +19,6 @@ MAIL_USE_TLS = True
 MAIL_USE_SSL = False
 MAIL_USERNAME = 'you@gmail.com'
 MAIL_PASSWORD = 'awesomepassword'
+
+# Flask-DebugToolbar
+DEBUG_TB_INTERCEPT_REDIRECTS = False
